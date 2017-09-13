@@ -26,7 +26,8 @@ export default {
     register: {
       success: false,
       failure: null
-    }
+    },
+    menus: null
   },
   mutations: {
     ACCOUNT_AUTH_STATUS_CHANGED: (state, data) => {
@@ -59,6 +60,9 @@ export default {
     ACCOUNT_REGISTER_FAILURE: (state, data) => {
       Vue.set(state.register, 'success', false);
       Vue.set(state.register, 'failure', data);
+    },
+    ACCOUNT_MENUS: (state, data) => {
+      Vue.set(state, 'menus', data);
     }
   },
   actions: {
@@ -75,7 +79,7 @@ export default {
       })
     },
     accountLogoutSubmit({ commit }) {
-      api.logout().then((response) => {
+      api.account.logout().then((response) => {
         commit(types.ACCOUNT_AUTH_STATUS_CHANGED, { status: 0 });
       });
     },
@@ -87,6 +91,13 @@ export default {
         } else {
           console.log(response.data);
           commit(types.ACCOUNT_REGISTER_FAILURE, response.data);
+        }
+      })
+    },
+    getMenus({ commit }) {
+      api.account.get_menu().then((res) => {
+        if (res.data.status) {
+          commit(types.ACCOUNT_MENUS, res.data);
         }
       })
     }

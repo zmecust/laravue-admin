@@ -14,7 +14,7 @@ export const constantRouterMap = [
     component: _import('account/Login'),
     hidden: true
   },
-]
+] //路由白名单
 
 export const asyncRouterMap = [
   {
@@ -47,23 +47,27 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   NProgress.start();
-  // if (to.matched.some(record => record.meta.requireAuth)) {
-  //   const auth = store.state.account.auth;
-  //   // this route requires auth, check if logged in
-  //   // if not, redirect to login page.
-  //   if (!auth.check()) {
-  //     next({
-  //       path: '/login',
-  //       query: { redirect_url: to.fullPath }
-  //     });
-  //     return;
-  //   } else {
-  //     store.dispatch('generateRoutes').then(() => {  //分发action,调用generateRoutes方法
-  //       router.addRoutes(store.getters.addRouters)
-  //       next();
-  //     })
-  //   }
-  // }
+  if (to.matched.some(record => record.meta.requireAuth)) {
+    const auth = store.state.account.auth;
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (!auth.check()) {
+      next({
+        path: '/login',
+        query: { redirect_url: to.fullPath }
+      });
+      return;
+    } else {
+      if (store.getters.menus === null) {
+        store.dispatch('getMenus').then(() => {
+          store.dispatch('GenerateRoutes').then(() => {
+            router.addRoutes(store.getters.addRouters)
+          });
+          next();
+        })
+      }
+    }
+  }
   next();
 });
 
