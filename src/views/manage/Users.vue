@@ -1,6 +1,6 @@
 <template>
   <div>
-    test
+    用户
   </div>
 </template>
 

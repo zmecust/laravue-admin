@@ -26,7 +26,7 @@
 
 <script>
 import { isvalidUsername } from '@/utils/validate'
-import {mapState, mapMutations} from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   name: 'login',
@@ -59,7 +59,7 @@ export default {
       showDialog: false
     }
   },
-  beforeRouteLeave (to, from, next) {
+  beforeRouteLeave(to, from, next) {
     this.$store.dispatch('generateRoutes').then(() => {  //分发action,调用generateRoutes方法
       this.$router.addRoutes(this.$store.getters.addRouters)
       next();
@@ -91,7 +91,7 @@ export default {
     },
     successWatcher(val, oldVal) {
       if (val && !oldVal) {
-        const redirectUrl = this.$route.query.redirect_url || '/';
+        const redirectUrl = this.$route.query.redirect_url || '/dashboard/dashboard';
         this.$router.push(redirectUrl);
       }
     }

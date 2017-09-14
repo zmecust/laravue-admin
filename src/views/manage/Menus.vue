@@ -1,6 +1,6 @@
 <template>
   <div>
-    首页
+    菜单
   </div>
 </template>
 

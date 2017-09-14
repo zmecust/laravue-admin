@@ -9,35 +9,28 @@ const _import = require('./_import')
 Vue.use(Router)
 
 export const constantRouterMap = [
+  { path: '/', component: _import('account/Login'), hidden: true },
   {
-    path: '/login',
-    component: _import('account/Login'),
-    hidden: true
-  },
+    path: '/',
+    component: Layout,
+    name: '首页',
+    noDropdown: true,
+    children: [{ path: 'dashboard', component: _import('dashboard/Dashboard') }]
+  }
 ] //路由白名单
 
 export const asyncRouterMap = [
   {
-    path: '/',
+    path: '/parent/setting',
     component: Layout,
-    redirect: '/dashboard',
-    meta: {
-      requireAuth: true
-    },
-    name: '首页',
-    noDropdown: true,
-    children: [{ path: 'dashboard', component: _import('dashboard/Dashboard') }]
-  },
-  {
-    path: '/hotel',
-    component: Layout,
-    redirect: '/hotel/index',
-    meta: {
-      requireAuth: true
-    },
-    name: '酒店管理',
-    noDropdown: true,
-    children: [{ path: 'index', component: _import('hotel/index'), hidden: true }]
+    name: '系统管理',
+    noDropdown: false,
+    children: [
+      { path: '/menus/index', component: _import('manage/Menus'), hidden: true },
+      { path: '/permissions/index', component: _import('manage/Permissions'), hidden: true },
+      { path: '/roles/index', component: _import('manage/Roles'), hidden: true },
+      { path: '/users/index', component: _import('manage/Users'), hidden: true }
+    ]
   }
 ]
 
@@ -47,26 +40,22 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   NProgress.start();
-  if (to.matched.some(record => record.meta.requireAuth)) {
-    const auth = store.state.account.auth;
-    // this route requires auth, check if logged in
-    // if not, redirect to login page.
-    if (!auth.check()) {
-      next({
-        path: '/login',
-        query: { redirect_url: to.fullPath }
+  const auth = store.state.account.auth;
+  if (!auth.check()) {
+    next({
+      path: '/login',
+      query: { redirect_url: to.fullPath }
+    });
+    return;
+  }
+
+  if (store.getters.menus === null) {
+    store.dispatch('getMenus').then(() => {
+      store.dispatch('generateRoutes').then(() => {
+        router.addRoutes(store.getters.addRouters)
       });
-      return;
-    } else {
-      if (store.getters.menus === null) {
-        store.dispatch('getMenus').then(() => {
-          store.dispatch('GenerateRoutes').then(() => {
-            router.addRoutes(store.getters.addRouters)
-          });
-          next();
-        })
-      }
-    }
+      next();
+    })
   }
   next();
 });

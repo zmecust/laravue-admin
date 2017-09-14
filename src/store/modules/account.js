@@ -97,7 +97,8 @@ export default {
     getMenus({ commit }) {
       api.account.get_menu().then((res) => {
         if (res.data.status) {
-          commit(types.ACCOUNT_MENUS, res.data);
+          console.log(res.data);
+          commit(types.ACCOUNT_MENUS, res.data.data);
         }
       })
     }

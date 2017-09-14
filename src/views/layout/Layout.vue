@@ -12,17 +12,17 @@
 import { Navbar, Sidebar, AppMain } from '@/components/layout'
 
 export default {
-  name: 'layout',
-  components: {
-	Navbar,
-	Sidebar,
-	AppMain
-  },
-  computed: {
-	sidebar() {
-	  return this.$store.state.app.sidebar
+	name: 'layout',
+	components: {
+		Navbar,
+		Sidebar,
+		AppMain
+	},
+	computed: {
+		sidebar() {
+			return this.$store.state.app.sidebar
+		}
 	}
-  }
 }
 </script>
 
