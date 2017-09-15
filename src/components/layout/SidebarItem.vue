@@ -2,13 +2,13 @@
   <div class='menu-wrapper'>
     <template v-for="item in routes">
 
-      <router-link v-if="!item.hidden && item.noDropdown && item.children.length > 0" :to="item.path + '/' + item.children[0].path" :key="item">
+      <router-link v-if="!item.hidden && item.noDropdown && item.children.length > 0" :to="item.path + '/' + item.children[0].path">
         <el-menu-item :index="item.path + '/' + item.children[0].path" class='submenu-title-noDropdown'>
           <span>{{ item.children[0].name }}</span>
         </el-menu-item>
       </router-link>
 
-      <el-submenu :index="item.name" v-if="!item.noDropdown && !item.hidden" :key="item">
+      <el-submenu :index="item.name" v-if="!item.noDropdown && !item.hidden">
         <template slot="title">
           <span>{{ item.name }}</span>
         </template>
@@ -16,8 +16,8 @@
 
           <sidebar-item class='nest-menu' v-if='child.children && child.children.length > 0' :routes='[child]'></sidebar-item>
 
-          <router-link v-else :to="item.path + '/' + child.path">
-            <el-menu-item :index="item.path + '/' + child.path">
+          <router-link v-else :to="child.path">
+            <el-menu-item :index="child.path">
               <span>{{ child.name }}</span>
             </el-menu-item>
           </router-link>

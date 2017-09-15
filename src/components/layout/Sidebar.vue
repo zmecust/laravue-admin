@@ -11,14 +11,12 @@ import SidebarItem from './SidebarItem'
 export default {
   components: { SidebarItem },
   computed: {
+    ...mapGetters([
+      'permission_routers',
+      'sidebar'
+    ]),
     isCollapse() {
       return !this.sidebar.opened
-    },
-    permission_routers() {
-      return this.$store.state.app.permission_routers  
-    },
-    sidebar() {
-      return this.$store.state.app.sidebar
     }
   }
 }

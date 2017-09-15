@@ -30,7 +30,6 @@ function filterAsyncRouter(asyncRouterMap, menus) {
     }
     return false
   })
-  console.log(accessedRouters);
   return accessedRouters
 }
 
@@ -43,13 +42,11 @@ const permission = {
     [types.SET_ROUTERS]: (state, routers) => {
       state.addRouters = routers
       state.routers = constantRouterMap.concat(routers)
-      console.log(state.routers);
     }
   },
   actions: {
     generateRoutes({ commit }) {
       return new Promise(resolve => {
-        console.log(store.getters.menus);
         let accessedRouters = filterAsyncRouter(asyncRouterMap, store.getters.menus)
         commit(types.SET_ROUTERS, accessedRouters)
         resolve()

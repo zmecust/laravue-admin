@@ -6,7 +6,6 @@
     <screenfull class='screenfull'></screenfull>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <!--<img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">-->
         <img class="user-avatar" src="../../assets/avatar.gif">
         <i class="el-icon-caret-bottom"></i>
       </div>
@@ -45,9 +44,9 @@ export default {
     }
   },
   computed: {
-    sidebar() {
-      return this.$store.state.app.sidebar
-    }
+    ...mapGetters([
+      'sidebar'
+    ])
   },
   methods: {
     toggleSideBar() {

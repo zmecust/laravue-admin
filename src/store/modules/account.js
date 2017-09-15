@@ -5,6 +5,7 @@ import * as types from '../mutation-types';
 const AUTH_ACCESS_TOKEN = 'auth.access_token';
 const AUTH_USER = 'auth.user';
 const AUTH_USER_ID = 'auth.id';
+const AUTH_MENUS = 'auth.menus';
 
 const localStorage = global.localStorage;
 const JSON = global.JSON;
@@ -17,7 +18,8 @@ export default {
       },
       access_token: JSON.parse(localStorage.getItem(AUTH_ACCESS_TOKEN)),
       id: parseInt(localStorage.getItem(AUTH_USER_ID), 10) || 0,
-      user: JSON.parse(localStorage.getItem(AUTH_USER))
+      user: JSON.parse(localStorage.getItem(AUTH_USER)),
+      menus: JSON.parse(localStorage.getItem(AUTH_MENUS)),
     },
     login: {
       success: false,
@@ -26,8 +28,7 @@ export default {
     register: {
       success: false,
       failure: null
-    },
-    menus: null
+    }
   },
   mutations: {
     ACCOUNT_AUTH_STATUS_CHANGED: (state, data) => {
@@ -38,6 +39,7 @@ export default {
         localStorage.removeItem(AUTH_ACCESS_TOKEN);
         localStorage.removeItem(AUTH_USER_ID);
         localStorage.removeItem(AUTH_USER);
+        localStorage.removeItem(AUTH_MENUS);
         return;
       }
       Vue.set(state.auth, 'access_token', data.data.jwt_token.access_token);
@@ -62,18 +64,17 @@ export default {
       Vue.set(state.register, 'failure', data);
     },
     ACCOUNT_MENUS: (state, data) => {
-      Vue.set(state, 'menus', data);
+      //Vue.set(state, 'menus', data);
+      localStorage.setItem(AUTH_MENUS, JSON.stringify(data));
     }
   },
   actions: {
     accountLoginSubmit({ commit }, params) {
       api.account.login(params).then((response) => {
         if (response.data.status) {
-          console.log(response.data);
           commit(types.ACCOUNT_AUTH_STATUS_CHANGED, response.data);
           commit(types.ACCOUNT_LOGIN_SUCCESS);
         } else {
-          console.log(response.data);
           commit(types.ACCOUNT_LOGIN_FAILURE, response.data);
         }
       })
@@ -89,7 +90,6 @@ export default {
           //commit(types.ACCOUNT_AUTH_STATUS_CHANGED, response.data);
           commit(types.ACCOUNT_REGISTER_SUCCESS);
         } else {
-          console.log(response.data);
           commit(types.ACCOUNT_REGISTER_FAILURE, response.data);
         }
       })
@@ -97,7 +97,6 @@ export default {
     getMenus({ commit }) {
       api.account.get_menu().then((res) => {
         if (res.data.status) {
-          console.log(res.data);
           commit(types.ACCOUNT_MENUS, res.data.data);
         }
       })
