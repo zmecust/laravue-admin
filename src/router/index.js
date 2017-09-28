@@ -38,24 +38,34 @@ const router = new Router({
   routes: constantRouterMap
 })
 
+
+const whiteList = ['/'] // 不重定向白名单
 router.beforeEach((to, from, next) => {
   NProgress.start();
-  // const auth = store.state.account.auth;
-  // if (!auth.check()) {
-  //   next({
-  //     path: '/login',
-  //     query: { redirect_url: to.fullPath }
-  //   });
-  //   return;
-  // }
-
-  store.dispatch('getMenus').then(() => {
-    store.dispatch('generateRoutes').then(() => {
-      router.addRoutes(store.getters.addRouters)
-    });
-    next();
-  })
-  next();
+  if (store.state.account.auth.check()) { // 判断是否登录
+    if (to.path === '/') {
+      next()
+    } else {
+      if (! store.getters.menus) { // 判断当前用户是否已拉取完user_info信息
+        store.dispatch('getMenus').then(() => {
+          store.dispatch('generateRoutes').then(() => {
+            router.addRoutes(store.getters.addRouters)
+            console.log('haha');
+            next();
+          });
+        })
+      } else {
+        next();        
+      }
+    }
+  } else {
+    if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
+      next()
+    } else {
+      next('/') // 否则全部重定向到登录页
+      NProgress.done()
+    }
+  }
 });
 
 router.afterEach(() => {

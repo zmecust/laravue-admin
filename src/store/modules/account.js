@@ -8,6 +8,7 @@ const AUTH_USER_ID = 'auth.id';
 const AUTH_MENUS = 'auth.menus';
 
 const localStorage = global.localStorage;
+const sessionStorage = global.sessionStorage;
 const JSON = global.JSON;
 
 export default {
@@ -19,7 +20,7 @@ export default {
       access_token: JSON.parse(localStorage.getItem(AUTH_ACCESS_TOKEN)),
       id: parseInt(localStorage.getItem(AUTH_USER_ID), 10) || 0,
       user: JSON.parse(localStorage.getItem(AUTH_USER)),
-      menus: JSON.parse(localStorage.getItem(AUTH_MENUS)),
+      menus: JSON.parse(sessionStorage.getItem(AUTH_MENUS)),
     },
     login: {
       success: false,
@@ -39,7 +40,7 @@ export default {
         localStorage.removeItem(AUTH_ACCESS_TOKEN);
         localStorage.removeItem(AUTH_USER_ID);
         localStorage.removeItem(AUTH_USER);
-        localStorage.removeItem(AUTH_MENUS);
+        sessionStorage.removeItem(AUTH_MENUS);
         return;
       }
       Vue.set(state.auth, 'access_token', data.data.jwt_token.access_token);
@@ -64,8 +65,8 @@ export default {
       Vue.set(state.register, 'failure', data);
     },
     ACCOUNT_MENUS: (state, data) => {
-      //Vue.set(state, 'menus', data);
-      localStorage.setItem(AUTH_MENUS, JSON.stringify(data));
+      Vue.set(state.auth, 'menus', data);
+      sessionStorage.setItem(AUTH_MENUS, JSON.stringify(data));
     }
   },
   actions: {

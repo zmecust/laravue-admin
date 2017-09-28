@@ -47,7 +47,8 @@ const permission = {
   actions: {
     generateRoutes({ commit }) {
       return new Promise(resolve => {
-        let accessedRouters = filterAsyncRouter(asyncRouterMap, store.getters.menus)
+        console.log(JSON.parse(sessionStorage.getItem('auth.menus')));
+        let accessedRouters = filterAsyncRouter(asyncRouterMap, JSON.parse(sessionStorage.getItem('auth.menus')))
         commit(types.SET_ROUTERS, accessedRouters)
         resolve()
       })

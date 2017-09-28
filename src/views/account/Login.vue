@@ -60,8 +60,8 @@ export default {
     }
   },
   beforeRouteLeave(to, from, next) {
-    this.$store.dispatch('generateRoutes').then(() => {  //分发action,调用generateRoutes方法
-      this.$router.addRoutes(this.$store.getters.addRouters)
+    this.$store.dispatch('getMenus').then(() => {  //分发action,调用generateRoutes方法
+      // this.$router.addRoutes(this.$store.getters.addRouters)
       next();
     })
   },
