@@ -40,30 +40,31 @@ const router = new Router({
 
 
 const whiteList = ['/'] // 不重定向白名单
+let ifRouteFresh = true // 解决刷新重新加载路由
 router.beforeEach((to, from, next) => {
   NProgress.start();
-  if (store.state.account.auth.check()) { // 判断是否登录
-    if (to.path === '/') {
-      next()
-    } else {
-      if (! store.getters.menus) { // 判断当前用户是否已拉取完user_info信息
-        store.dispatch('getMenus').then(() => {
-          store.dispatch('generateRoutes').then(() => {
-            router.addRoutes(store.getters.addRouters)
-            console.log('haha');
-            next();
-          });
-        })
-      } else {
-        next();        
-      }
-    }
-  } else {
+  if (!store.state.account.auth.check()) { // 判断是否登录
     if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
       next()
     } else {
-      next('/') // 否则全部重定向到登录页
-      NProgress.done()
+      // 否则全部重定向到登录页
+      next({
+        path: '/',
+        query: { redirect_url: to.fullPath }
+      });
+    }
+  } else {
+    if (ifRouteFresh) {
+      ifRouteFresh = false;
+      store.dispatch('getMenus').then((res) => {
+        let menus = res.data.data;
+        store.dispatch('generateRoutes', { menus }).then(() => {
+          router.addRoutes(store.getters.addRouters)
+          next({ ...to });
+        });
+      })
+    } else {
+      next();
     }
   }
 });

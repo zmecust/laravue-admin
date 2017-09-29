@@ -96,10 +96,15 @@ export default {
       })
     },
     getMenus({ commit }) {
-      api.account.get_menu().then((res) => {
-        if (res.data.status) {
-          commit(types.ACCOUNT_MENUS, res.data.data);
-        }
+      return new Promise((resolve, reject) => {
+        api.account.get_menu().then((res) => {
+          if (res.data.status) {
+            commit(types.ACCOUNT_MENUS, res.data.data);
+            resolve(res)
+          }
+        }).catch(error => {
+          reject(error)
+        })
       })
     }
   }

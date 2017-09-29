@@ -59,12 +59,6 @@ export default {
       showDialog: false
     }
   },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch('getMenus').then(() => {  //分发action,调用generateRoutes方法
-      // this.$router.addRoutes(this.$store.getters.addRouters)
-      next();
-    })
-  },
   methods: {
     showPwd() {
       if (this.pwdType === 'password') {
