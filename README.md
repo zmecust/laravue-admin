@@ -2,7 +2,9 @@
 
 > 微型社区 LaraVue 的后台管理界面
 
-## Build Setup
+## 演示地址
+
+> http://admin.laravue.org
 
 ``` bash
 # install dependencies
