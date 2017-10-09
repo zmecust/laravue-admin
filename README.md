@@ -6,6 +6,10 @@
 
 > http://admin.laravue.org
 
+## 说明
+
+> 根据权限动态生成前端路由
+
 ``` bash
 # install dependencies
 npm install
