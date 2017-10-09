@@ -8,10 +8,14 @@ export default {
       'login': res.username,
       'password': res.password
     }
-    return Vue.http.post('https://api.laravue.org/api/v1/user/login', params);
+    return Vue.http.post('user/login', params);
+  },
+  // 登出
+  logout() {
+    return Vue.http.get('user/logout');
   },
   // 获取菜单
   get_menu() {
-    return Vue.http.get('https://api.laravue.org/api/v1/admin/menu');
+    return Vue.http.get('admin/menu');
   }
 }

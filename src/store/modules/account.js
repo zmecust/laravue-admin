@@ -86,7 +86,7 @@ export default {
       });
     },
     accountRegisterSubmit({ commit }, params) {
-      api.register(params).then((response) => {
+      api.account.register(params).then((response) => {
         if (response.data.status) {
           //commit(types.ACCOUNT_AUTH_STATUS_CHANGED, response.data);
           commit(types.ACCOUNT_REGISTER_SUCCESS);

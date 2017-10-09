@@ -85,7 +85,7 @@ export default {
     },
     successWatcher(val, oldVal) {
       if (val && !oldVal) {
-        const redirectUrl = this.$route.query.redirect_url || '/dashboard/dashboard';
+        const redirectUrl = this.$route.query.redirect_url || '/';
         this.$router.push(redirectUrl);
       }
     }

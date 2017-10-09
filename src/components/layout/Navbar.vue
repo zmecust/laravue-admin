@@ -7,7 +7,7 @@
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <img class="user-avatar" src="../../assets/avatar.gif">
-        <i class="el-icon-caret-bottom"></i>
+        <i class="el-icon-caret-bottom" style="top: 18px; position: absolute"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
         <router-link class='inlineBlock' to="/">
