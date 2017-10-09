@@ -9,13 +9,15 @@ const _import = require('./_import')
 Vue.use(Router)
 
 export const constantRouterMap = [
-  { path: '/', component: _import('account/Login'), hidden: true },
+  { path: '/login', component: _import('account/Login'), hidden: true },
   {
-    path: '/dashboard',
+    path: '/',
     component: Layout,
+    redirect: '/dashboard',
     name: '首页',
+    icon: 'home',
     noDropdown: true,
-    children: [{ path: 'dashboard', component: _import('dashboard/Dashboard'), name: '首页' }]
+    children: [{ path: '/dashboard', component: _import('dashboard/Dashboard'), name: '首页' }]
   }
 ] //路由白名单
 
@@ -25,6 +27,8 @@ export const asyncRouterMap = [
     component: Layout,
     name: '系统管理',
     noDropdown: false,
+    redirect: 'noredirect',
+    icon: 'cog',
     children: [
       { path: '/menus/index', component: _import('manage/Menus'), name: '菜单列表' },
       { path: '/permissions/index', component: _import('manage/Permissions'), name: '权限列表' },
@@ -39,7 +43,7 @@ const router = new Router({
 })
 
 
-const whiteList = ['/'] // 不重定向白名单
+const whiteList = ['/login'] // 不重定向白名单
 let ifRouteFresh = true // 解决刷新重新加载路由
 router.beforeEach((to, from, next) => {
   NProgress.start();
@@ -49,7 +53,7 @@ router.beforeEach((to, from, next) => {
     } else {
       // 否则全部重定向到登录页
       next({
-        path: '/',
+        path: '/login',
         query: { redirect_url: to.fullPath }
       });
     }
