@@ -1,6 +1,6 @@
-# hotel-medium-vue
+# laravue-admin
 
-> A Vue.js project
+> 微型社区 LaraVue 的后台管理界面
 
 ## Build Setup
 
