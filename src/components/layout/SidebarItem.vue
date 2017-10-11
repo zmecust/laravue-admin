@@ -18,7 +18,7 @@
 
           <router-link v-else :to="child.path">
             <el-menu-item :index="child.path">
-              <span>{{ child.name }}</span>
+              {{ child.name }}</span>
             </el-menu-item>
           </router-link>
 

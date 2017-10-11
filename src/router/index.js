@@ -35,6 +35,17 @@ export const asyncRouterMap = [
       { path: '/roles/index', component: _import('manage/Roles'), name: '角色列表' },
       { path: '/users/index', component: _import('manage/Users'), name: '用户列表' }
     ]
+  },
+  {
+    path: '/parent/content',
+    component: Layout,
+    name: '内容管理',
+    noDropdown: false,
+    redirect: 'noredirect',
+    icon: 'th-large',
+    children: [
+      { path: '/articles/index', component: _import('content/Articles'), name: '文章列表' },
+    ]
   }
 ]
 
