@@ -3,6 +3,5 @@ const getters = {
   visitedViews: state => state.app.visitedViews,
   permission_routers: state => state.permission.routers,
   addRouters: state => state.permission.addRouters,
-  menus: state => state.account.auth.menus,
 }
 export default getters

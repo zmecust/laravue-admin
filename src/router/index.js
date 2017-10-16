@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import Layout from '../views/layout/Layout'
+import api from '../api'
 
 const _import = require('./_import')
 Vue.use(Router)
@@ -71,7 +72,7 @@ router.beforeEach((to, from, next) => {
   } else {
     if (ifRouteFresh) {
       ifRouteFresh = false;
-      store.dispatch('getMenus').then((res) => {
+      api.account.get_menu().then((res) => {
         let menus = res.data.data;
         store.dispatch('generateRoutes', { menus }).then(() => {
           router.addRoutes(store.getters.addRouters)
