@@ -3,6 +3,7 @@ import VueResource from 'vue-resource';
 import store from '../store';
 import account from './account';
 import manage from './manage';
+import article from './article';
 
 Vue.use(VueResource); //引入vue-resource
 
@@ -22,5 +23,6 @@ Vue.http.interceptors.push((request, next) => {
 
 export default {
   account,
-  manage
+  manage,
+  article
 }

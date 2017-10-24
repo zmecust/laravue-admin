@@ -54,7 +54,6 @@ const router = new Router({
   routes: constantRouterMap
 })
 
-
 const whiteList = ['/login'] // 不重定向白名单
 let ifRouteFresh = true // 解决刷新重新加载路由
 router.beforeEach((to, from, next) => {

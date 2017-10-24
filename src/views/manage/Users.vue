@@ -18,23 +18,38 @@
         <el-table-column prop="id" label="id" :align="align" v-if="false">
         </el-table-column>
         <el-table-column prop="name" label="用户名：" :align="align">
+          <template scope="scope">
+            <span class="link-type" @click="edit(scope.$index, scope.row.id)">{{scope.row.name}}</span>
+          </template>
         </el-table-column>
         <el-table-column prop="email" label="邮箱：" :align="align">
         </el-table-column>
         <el-table-column prop="modify_roles" label="角色：" :align="align">
           <template scope="scope">
-            <el-tag :type="'success'" close-transition>{{scope.row.modify_roles}}</el-tag>
+            <el-tag close-transition v-for="index in scope.row.roles" :key="index.id">{{index.description}}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="articles_count" label="发表文章数：" :align="align">
+        <el-table-column prop="articles_count" sortable label="发表文章数：" :align="align">
         </el-table-column>
-        <el-table-column prop="created_at" label="创建时间：" :align="align">
+        <el-table-column prop="is_confirmed" sortable label="是否激活：" :align="align">
+          <template scope="scope">
+            <el-input v-show="scope.row.edit" size="small" v-model="scope.row.is_confirmed"></el-input>
+            <span v-show="!scope.row.edit">{{ scope.row.is_confirmed }}</span>
+          </template>
         </el-table-column>
-        <el-table-column prop="is_banned" label="是否禁用：" :align="align">
+        <el-table-column prop="is_banned" sortable label="是否禁用：" :align="align">
+          <template scope="scope">
+            <el-input v-show="scope.row.edit" size="small" v-model="scope.row.is_banned"></el-input>
+            <span v-show="!scope.row.edit">{{ scope.row.is_banned }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="last_actived_at" sortable label="最后访问：" :align="align">
+        </el-table-column>
+        <el-table-column prop="created_at" sortable label="创建时间：" :align="align">
         </el-table-column>
         <el-table-column label="操作" width="220" :align="align">
           <template scope="scope">
-            <el-button size="small" @click="edit(scope.$index, scope.row.id)" icon="edit">编辑</el-button>
+            <el-button :type="scope.row.edit?'success':'primary'" @click='handerUpdate(scope.$index, scope.row.id, scope.row.edit=!scope.row.edit)' size="small" icon="edit">{{scope.row.edit?'完成':'编辑'}}</el-button>
             <el-button size="small" type="danger" @click="del(scope.$index, scope.row.id)" icon="delete">删除</el-button>
           </template>
         </el-table-column>
@@ -82,15 +97,18 @@ export default {
   methods: {
     async datas(filter, val) {
       api.manage.get_users({ params: { filter: filter, paginate: this.pageSize, page: val } }).then((res) => {
-        console.log(res.data);
         var res = res.data.data;
-        this.tableData = [...res.data];
+        this.tableData = res.data.map(v => {
+          this.$set(v, 'edit', false)
+          return v
+        })
+        // this.tableData = [...res.data];
         this.total = Number(res.total);
-        for (let key1 in this.tableData) {
-          for (let key2 in this.tableData[key1]['roles']) {
-            this.tableData[key1]['modify_roles'] = this.tableData[key1]['roles'][key2]['description'];
-          }
-        }
+        // for (let key1 in this.tableData) {
+        //   for (let key2 in this.tableData[key1]['roles']) {
+        //     this.tableData[key1]['modify_roles'] = this.tableData[key1]['roles'][key2]['description'];
+        //   }
+        // }
       })
     },
     handleCurrentChange(val) {
@@ -174,6 +192,11 @@ export default {
     },
     submit() {
       this.datas(this.searchform.name)
+    },
+    handerUpdate(index, id) {
+      if (!this.tableData[index].edit) {
+        api.manage.edit_user(id, { is_confirmed: this.tableData[index].is_confirmed, is_banned: this.tableData[index].is_banned })
+      }
     }
   }
 }
