@@ -4,7 +4,7 @@
 
 ## 演示地址
 
-> http://admin.laravue.org
+> http://47.52.156.68
 
 ## 说明
 
