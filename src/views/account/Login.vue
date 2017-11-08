@@ -16,9 +16,10 @@
         </span>
         <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="密码" />
         <span class='show-pwd' @click='showPwd'>
+          <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
         </span>
       </el-form-item>
-
+      <p style="color: red" v-if="failure">{{failure.message}}</p>
       <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
     </el-form>
   </div>
@@ -96,7 +97,7 @@ export default {
   }),
   watch: {
     success: 'successWatcher',
-  },
+  }
 }
 </script>
 
