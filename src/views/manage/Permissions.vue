@@ -2,10 +2,7 @@
   <div class="content">
     <div class="search">
       <el-form label-width="80px" ref="searchform" :model="searchform">
-        <el-form-item label="权限名：" class="searchInput">
-          <el-input placeholder="请输入搜索内容" icon="search" v-model="searchform.name">
-          </el-input>
-        </el-form-item>
+        <el-input placeholder="请输入权限名" icon="search" v-model="searchform.name" style="width: 30%; float: left; margin-right: 20px"></el-input>
         <el-form-item>
           <el-button type="primary" @click="submit()">搜索</el-button>
         </el-form-item>
