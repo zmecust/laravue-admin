@@ -50,7 +50,7 @@
         <el-form v-bind:model="editTable" ref="editForm" label-position="left" label-width="100px">
           <el-form-item label="角色名：">
             <el-select size="" class="select" multiple v-model="editRoles">
-              <el-option v-for="item in roles" :label="item.description" :value="item.description" key="1">
+              <el-option v-for="item in roles" :label="item.description" :value="item.description" :key="item">
               </el-option>
             </el-select>
           </el-form-item>

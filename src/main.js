@@ -11,6 +11,14 @@ import 'font-awesome/css/font-awesome.css'
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
+// 注册一个全局自定义指令 v-has, 判断按钮级权限
+Vue.directive('has', {
+  inserted: function(el, binding) {
+    console.log(el);
+    el.disabled = "disabled: \"disabled\"";
+  }
+})
+
 new Vue({
   el: '#app',
   router,
