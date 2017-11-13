@@ -1,67 +1,136 @@
 import Vue from 'vue';
 
 export default {
-  get_sidebar_tree() {
-    return Vue.http.get('admin/menu');
+  get_sidebar_tree: {
+    permission: '',
+    request: () => {
+      return Vue.http.get('admin/menu');
+    }
   },
-  get_users(params) {
-    return Vue.http.get('admin/users', params);
+  get_users: {
+    permission: 'users.index',
+    request: (params) => {
+      return Vue.http.get('admin/users', params);
+    }
   },
-  get_user(id) {
-    return Vue.http.get('admin/users/' + id);
+  get_user: {
+    permission: 'users.show',
+    request: (id) => {
+      return Vue.http.get('admin/users/' + id);
+    }
   },
-  edit_user(id, params) {
-    return Vue.http.patch('admin/users/' + id, params);
+  edit_user: {
+    permission: 'users.update',
+    request: (id, params) => {
+      return Vue.http.patch('admin/users/' + id, params);
+    }
   },
-  delete_user(id) {
-    return Vue.http.delete('admin/users/' + id);
+  delete_user: {
+    permission: 'users.destroy',
+    request: (id) => {
+      return Vue.http.delete('admin/users/' + id);
+    }
   },
-  get_all_menus() {
-    return Vue.http.get('admin/menus');
+  get_all_menus: {
+    permission: 'menus.index',
+    request: (id) => {
+      return Vue.http.get('admin/menus');
+    }
   },
-  get_menu(id) {
-    return Vue.http.get('admin/menus/' + id);
+  get_menu: {
+    permission: 'menus.show',
+    request: (id) => {
+      return Vue.http.get('admin/menus/' + id);
+    }
   },
-  create_menu(params) {
-    return Vue.http.post('admin/menus', params);
+  create_menu: {
+    permission: 'menus.store',
+    request: (params) => {
+      return Vue.http.post('admin/menus', params);
+    }
   },
-  edit_menu(id, params) {
-    return Vue.http.patch('admin/menus/' + id, params);
+  edit_menu: {
+    permission: 'menus.update',
+    request: (id, params) => {
+      return Vue.http.patch('admin/menus/' + id, params);
+    }
   },
-  delete_menu(id) {
-    return Vue.http.delete('admin/menus/' + id);
+  delete_menu: {
+    permission: 'menus.destroy',
+    request: (id) => {
+      return Vue.http.delete('admin/menus/' + id);
+    }
   },
-  get_permissions(params) {
-    return Vue.http.get('admin/permissions', params);
+  get_permissions: {
+    permission: 'permissions.index',
+    request: (params) => {
+      return Vue.http.get('admin/permissions', params);
+    }
   },
-  get_permission(id) {
-    return Vue.http.get('admin/permissions/' + id);
+  get_permission: {
+    permission: 'permissions.show',
+    request: (id) => {
+      return Vue.http.get('admin/permissions/' + id);
+    }
   },
-  group_permissions() {
-    return Vue.http.get('admin/group_permissions');
+  group_permissions: {
+    permission: '',
+    request: () => {
+      return Vue.http.get('admin/group_permissions');
+    }
   },
-  create_permission(params) {
-    return Vue.http.post('admin/permissions', params);
+  create_permission: {
+    permission: 'permissions.store',
+    request: (params) => {
+      return Vue.http.post('admin/permissions', params);
+    }
   },
-  edit_permission(id, params) {
-    return Vue.http.patch('admin/permissions/' + id, params);
+  button_permission: {
+    permission: '',
+    request: (params) => {
+      return Vue.http.get('admin/button_permissions');
+    }
   },
-  delete_permission(id) {
-    return Vue.http.delete('admin/permissions/' + id);
+  edit_permission: {
+    permission: 'permissions.update',
+    request: (id, params) => {
+      return Vue.http.patch('admin/permissions/' + id, params);
+    }
   },
-  get_roles(params) {
-    return Vue.http.get('admin/roles', params);
+  delete_permission: {
+    permission: 'permissions.destroy',
+    request: (id) => {
+      return Vue.http.delete('admin/permissions/' + id);
+    }
   },
-  get_role(id) {
-    return Vue.http.get('admin/roles/' + id);
+  get_roles: {
+    permission: 'roles.index',
+    request: (params) => {
+      return Vue.http.get('admin/roles', params);
+    }
   },
-  create_role(params) {
-    return Vue.http.post('admin/roles', params);
+  get_role: {
+    permission: 'roles.show',
+    request: (id) => {
+      return Vue.http.get('admin/roles/' + id);
+    }
   },
-  edit_role(id, params) {
-    return Vue.http.patch('admin/roles/' + id, params);
+  create_role: {
+    permission: 'roles.store',
+    request: (params) => {
+      return Vue.http.post('admin/roles', params);
+    }
   },
-  delete_role(id) {
-    return Vue.http.delete('admin/roles/' + id);
+  edit_role: {
+    permission: 'roles.update',
+    request: (id, params) => {
+      return Vue.http.patch('admin/roles/' + id, params);
+    }
   },
+  delete_role: {
+    permission: 'roles.destroy',
+    request: (id) => {
+      return Vue.http.delete('admin/roles/' + id);
+    }
+  }
 }

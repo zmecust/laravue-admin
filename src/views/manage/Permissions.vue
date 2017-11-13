@@ -9,7 +9,7 @@
       </el-form>
     </div>
     <div class="table">
-      <el-button @click="add()" icon="plus" type="primary" class="add">创建权限</el-button>
+      <el-button @click="add()" icon="plus" type="primary" class="add" v-has="has(create_permission)">创建权限</el-button>
       <el-table v-bind:data="tableData" border style="width: 100%" highlight-current-row :fit="listWidth">
         <el-table-column type="selection" width="50">
         </el-table-column>
@@ -22,9 +22,9 @@
         <el-table-column prop="uri" label="绑定路由名：" :align="align">
         </el-table-column>
         <el-table-column label="操作" width="220" :align="align">
-          <template scope="scope">
-            <el-button size="small" @click="edit(scope.$index, scope.row.id)" icon="edit">编辑</el-button>
-            <el-button size="small" type="danger" @click="del(scope.$index, scope.row.id)" icon="delete">删除</el-button>
+          <template slot-scope="scope">
+            <el-button size="small" @click="edit(scope.$index, scope.row.id)" icon="edit" v-has="has(edit_permission)">编辑</el-button>
+            <el-button size="small" type="danger" @click="del(scope.$index, scope.row.id)" icon="delete" v-has="has(delete_permission)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -68,6 +68,9 @@ export default {
         name: '',
         uri: ''
       },
+      create_permission: api.manage.create_permission,
+      edit_permission: api.manage.edit_permission,
+      delete_permission: api.manage.delete_permission
     }
   },
   mounted() {
@@ -75,7 +78,7 @@ export default {
   },
   methods: {
     async datas(filter, val) {
-      api.manage.get_permissions({ params: { filter: filter, paginate: this.pageSize, page: val } }).then((res) => {
+      api.manage.get_permissions.request({ params: { filter: filter, paginate: this.pageSize, page: val } }).then((res) => {
         var res = res.data.data;
         this.tableData = [...res.data];
         this.total = Number(res.total);
@@ -101,7 +104,7 @@ export default {
       this.index = index;
       this.dialogTitle = "编辑权限";
       this.isAdd = false;
-      api.manage.get_permission(this.id).then((res) => {
+      api.manage.get_permission.request(this.id).then((res) => {
         this.showEdit = true;
         this.editTable = res.data.data;
       })
@@ -112,7 +115,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        api.manage.delete_permission(id).then((res) => {
+        api.manage.delete_permission.request(id).then((res) => {
           if (1 == res.data.status) {
             this.$message({
               showClose: true,
@@ -138,7 +141,7 @@ export default {
     save() {
       this.load = true;
       if (this.isAdd) {
-        api.manage.create_permission(this.editTable).then((res) => {
+        api.manage.create_permission.request(this.editTable).then((res) => {
           if (res.data.status == 0) {
             this.messageType = "error"
           } else {
@@ -153,7 +156,7 @@ export default {
         })
 
       } else {
-        api.manage.edit_permission(this.id, this.editTable).then((res) => {
+        api.manage.edit_permission.request(this.id, this.editTable).then((res) => {
           if (res.data.status == 0) {
             this.messageType = "error"
           } else {

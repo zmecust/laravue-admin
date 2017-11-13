@@ -27,7 +27,8 @@ export default {
     register: {
       success: false,
       failure: null
-    }
+    },
+    button_permission: ''
   },
   mutations: {
     ACCOUNT_AUTH_STATUS_CHANGED: (state, data) => {
@@ -60,6 +61,9 @@ export default {
     ACCOUNT_REGISTER_FAILURE: (state, data) => {
       Vue.set(state.register, 'success', false);
       Vue.set(state.register, 'failure', data);
+    },
+    BUTTON_PERMISSION: (state, data) => {
+      Vue.set(state, 'button_permission', data);
     }
   },
   actions: {
@@ -87,6 +91,11 @@ export default {
           commit(types.ACCOUNT_REGISTER_FAILURE, response.data);
         }
       })
+    },
+    button_permission({ commit }) {
+      api.manage.button_permission.request().then((response) => {
+        commit(types.BUTTON_PERMISSION, response.data.data);
+      });
     }
   }
 }

@@ -71,6 +71,9 @@ router.beforeEach((to, from, next) => {
   } else {
     if (ifRouteFresh) {
       ifRouteFresh = false;
+      // 获取按钮级权限
+      store.dispatch('button_permission');
+      // 获取菜单路由，并动态加载
       api.account.get_menu().then((res) => {
         let menus = res.data.data;
         store.dispatch('generateRoutes', { menus }).then(() => {

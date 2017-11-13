@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="table">
-      <el-button @click="add()" icon="plus" type="primary" class="add">添加一级菜单</el-button>
+      <el-button @click="add()" icon="plus" type="primary" class="add" v-has="has(get_all_menus)">添加一级菜单</el-button>
       <el-tree :data="data2" :props="defaultProps" node-key="id" default-expand-all :expand-on-click-node="false" :render-content="renderContent">
       </el-tree>
     </div>
@@ -41,6 +41,10 @@ export default {
         children: 'children',
         label: 'display_name'
       },
+      get_all_menus: api.manage.get_all_menus,
+      create_menu: api.manage.create_menu,
+      edit_menu: api.manage.edit_menu,
+      delete_menu: api.manage.delete_menu
     }
   },
   mounted() {
@@ -48,7 +52,7 @@ export default {
   },
   methods: {
     async datas() {
-      api.manage.get_all_menus().then((res) => {
+      api.manage.get_all_menus.request().then((res) => {
         var res = res.data;
         this.data2 = [...res.data];
       })
@@ -56,7 +60,7 @@ export default {
     save() {
       this.load = true;
       if (this.isAdd) {
-        api.manage.create_menu({
+        api.manage.create_menu.request({
           parent_id: this.parent_id,
           name: this.editTable.name,
           display_name: this.editTable.display_name,
@@ -74,7 +78,7 @@ export default {
           this.load = false, this.showEdit = false
         })
       } else {
-        api.manage.edit_menu(this.id, {
+        api.manage.edit_menu.request(this.id, {
           name: this.editTable.name,
           display_name: this.editTable.display_name,
         }).then((res) => {
@@ -123,7 +127,7 @@ export default {
                   //store.append({ id: self.baseId++, label: 'testtest', children: [] }, data);
                 }
               }
-            }, "修改"),
+            }, "编辑"),
             createElement('el-button', {
               attrs: {
                 size: "mini",
@@ -154,7 +158,7 @@ export default {
       this.id = id;
       this.dialogTitle = "编辑菜单";
       this.isAdd = false;
-      api.manage.get_menu(this.id).then((res) => {
+      api.manage.get_menu.request(this.id).then((res) => {
         this.showEdit = true;
         this.editTable = res.data.data;
       })
@@ -165,7 +169,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        api.manage.delete_menu(id).then((res) => {
+        api.manage.delete_menu.request(id).then((res) => {
 
           if (1 == res.data.status) {
             this.$message({

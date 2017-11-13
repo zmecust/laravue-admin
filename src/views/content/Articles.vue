@@ -11,20 +11,20 @@
     <div class="table">
       <el-table v-bind:data="tableData" border style="width: 100%" highlight-current-row :fit="listWidth">
         <el-table-column align="center" label="序号" width="80">
-          <template scope="scope">
+          <template slot-scope="scope">
             <span>{{scope.$index + 1}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="user.name" label="作者：" :align="align">
         </el-table-column>
         <el-table-column prop="title" width="400" label="标题：" :align="align">
-          <template scope="scope">
+          <template slot-scope="scope">
             <span class="link-type" @click="edit(scope.$index, scope.row.id)">{{scope.row.title}}</span>
             <el-tag>{{scope.row.category.name}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="modify_roles" width="250" label="标签：" :align="align">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-tag close-transition v-for="index in scope.row.tags" :key="index.id">{{index.name}}</el-tag>
           </template>
         </el-table-column>
@@ -35,12 +35,12 @@
         <el-table-column prop="is_hidden" label="是否隐藏：" :align="align">
         </el-table-column>
         <el-table-column prop="created_at" sortable label="创建时间：" :align="align">
-          <template scope="scope">
+          <template slot-scope="scope">
             <span>{{scope.row.created_at.slice(0, 16)}}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="220" :align="align">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button :type="scope.row.edit?'success':'primary'" @click='handerUpdate(scope.$index, scope.row.id, scope.row.edit=!scope.row.edit)' size="small" icon="edit">{{scope.row.edit?'完成':'编辑'}}</el-button>
             <el-button size="small" type="danger" @click="del(scope.$index, scope.row.id)" icon="delete">删除</el-button>
           </template>

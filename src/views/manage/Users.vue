@@ -15,27 +15,27 @@
         <el-table-column prop="id" label="id" :align="align" v-if="false">
         </el-table-column>
         <el-table-column prop="name" label="用户名：" :align="align">
-          <template scope="scope">
+          <template slot-scope="scope">
             <span class="link-type" @click="edit(scope.$index, scope.row.id)">{{scope.row.name}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="email" label="邮箱：" :align="align">
         </el-table-column>
         <el-table-column prop="modify_roles" label="角色：" :align="align">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-tag close-transition v-for="index in scope.row.roles" :key="index.id">{{index.description}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="articles_count" sortable label="发表文章数：" :align="align">
         </el-table-column>
         <el-table-column prop="is_confirmed" sortable label="是否激活：" :align="align">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-input v-show="scope.row.edit" size="small" v-model="scope.row.is_confirmed"></el-input>
             <span v-show="!scope.row.edit">{{ scope.row.is_confirmed }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="is_banned" sortable label="是否禁用：" :align="align">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-input v-show="scope.row.edit" size="small" v-model="scope.row.is_banned"></el-input>
             <span v-show="!scope.row.edit">{{ scope.row.is_banned }}</span>
           </template>
@@ -45,9 +45,9 @@
         <el-table-column prop="created_at" sortable label="创建时间：" :align="align">
         </el-table-column>
         <el-table-column label="操作" width="220" :align="align">
-          <template scope="scope">
-            <el-button :type="scope.row.edit?'success':'primary'" @click='handerUpdate(scope.$index, scope.row.id, scope.row.edit=!scope.row.edit)' size="small" icon="edit">{{scope.row.edit?'完成':'编辑'}}</el-button>
-            <el-button size="small" type="danger" @click="del(scope.$index, scope.row.id)" icon="delete">删除</el-button>
+          <template slot-scope="scope">
+            <el-button :type="scope.row.edit?'success':'primary'" @click='handerUpdate(scope.$index, scope.row.id, scope.row.edit=!scope.row.edit)' size="small" icon="edit" v-has="has(edit_user)">{{scope.row.edit?'完成':'编辑'}}</el-button>
+            <el-button size="small" type="danger" @click="del(scope.$index, scope.row.id)" icon="delete" v-has="has(delete_user)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -55,12 +55,12 @@
         <el-form v-bind:model="editTable" ref="editForm" label-position="left" label-width="100px">
           <el-form-item label="角色名：">
             <el-select size="" class="select" multiple v-model="editRoles">
-              <el-option v-for="item in roles" :label="item.description" :value="item.description" key="1">
+              <el-option v-for="item in roles" :label="item.description" :value="item.description" :key="item.name">
               </el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" v-on:click="save" :loading="load">确 定</el-button>
+            <el-button type="primary" v-on:click="save" :loading="load" v-has="has(edit_user)">确 定</el-button>
             <el-button type="primary" v-on:click="cancel">取 消</el-button>
           </el-form-item>
         </el-form>
@@ -86,6 +86,8 @@ export default {
       editTable: {},
       editRoles: [],
       roles: {},
+      edit_user: api.manage.edit_user,
+      delete_user: api.manage.delete_user
     }
   },
   mounted() {
@@ -93,7 +95,7 @@ export default {
   },
   methods: {
     async datas(filter, val) {
-      api.manage.get_users({ params: { filter: filter, paginate: this.pageSize, page: val } }).then((res) => {
+      api.manage.get_users.request({ params: { filter: filter, paginate: this.pageSize, page: val } }).then((res) => {
         var res = res.data.data;
         this.tableData = res.data.map(v => {
           this.$set(v, 'edit', false)
@@ -128,10 +130,10 @@ export default {
       this.index = index;
       this.dialogTitle = "编辑用户";
       this.isAdd = false;
-      api.manage.get_roles().then((res) => {
+      api.manage.get_roles.request().then((res) => {
         this.roles = res.data.data.data;
       })
-      api.manage.get_user(this.id).then((res) => {
+      api.manage.get_user.request(this.id).then((res) => {
         this.editRoles = res.data.data;
         this.showEdit = true;
       })
@@ -142,7 +144,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        api.manage.delete_user(id).then((res) => {
+        api.manage.delete_user.request(id).then((res) => {
           if (1 == res.data.status) {
             this.$message({
               showClose: true,
@@ -167,7 +169,7 @@ export default {
     },
     save() {
       this.load = true;
-      api.manage.edit_user(this.id, { roles: this.editRoles }).then((res) => {
+      api.manage.edit_user.request(this.id, { roles: this.editRoles }).then((res) => {
         if (res.data.status == 0) {
           this.messageType = "error"
         } else {
@@ -192,7 +194,7 @@ export default {
     },
     handerUpdate(index, id) {
       if (!this.tableData[index].edit) {
-        api.manage.edit_user(id, { is_confirmed: this.tableData[index].is_confirmed, is_banned: this.tableData[index].is_banned })
+        api.manage.edit_user.request(id, { is_confirmed: this.tableData[index].is_confirmed, is_banned: this.tableData[index].is_banned })
       }
     }
   }
