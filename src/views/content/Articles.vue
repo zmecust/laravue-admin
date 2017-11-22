@@ -9,22 +9,23 @@
       </el-form>
     </div>
     <div class="table">
+      <el-button @click="add()" icon="plus" type="primary" class="add"  v-has="has(create_article)">创建文章</el-button>
       <el-table v-bind:data="tableData" border style="width: 100%" highlight-current-row :fit="listWidth">
         <el-table-column align="center" label="序号" width="80">
-          <template slot-scope="scope">
+          <template scope="scope">
             <span>{{scope.$index + 1}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="user.name" label="作者：" :align="align">
         </el-table-column>
         <el-table-column prop="title" width="400" label="标题：" :align="align">
-          <template slot-scope="scope">
+          <template scope="scope">
             <span class="link-type" @click="edit(scope.$index, scope.row.id)">{{scope.row.title}}</span>
             <el-tag>{{scope.row.category.name}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="modify_roles" width="250" label="标签：" :align="align">
-          <template slot-scope="scope">
+          <template scope="scope">
             <el-tag close-transition v-for="index in scope.row.tags" :key="index.id">{{index.name}}</el-tag>
           </template>
         </el-table-column>
@@ -35,12 +36,12 @@
         <el-table-column prop="is_hidden" label="是否隐藏：" :align="align">
         </el-table-column>
         <el-table-column prop="created_at" sortable label="创建时间：" :align="align">
-          <template slot-scope="scope">
+          <template scope="scope">
             <span>{{scope.row.created_at.slice(0, 16)}}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="220" :align="align">
-          <template slot-scope="scope">
+          <template scope="scope">
             <el-button :type="scope.row.edit?'success':'primary'" @click='handerUpdate(scope.$index, scope.row.id, scope.row.edit=!scope.row.edit)' size="small" icon="edit">{{scope.row.edit?'完成':'编辑'}}</el-button>
             <el-button size="small" type="danger" @click="del(scope.$index, scope.row.id)" icon="delete">删除</el-button>
           </template>
@@ -61,7 +62,7 @@
         </el-form>
       </el-dialog>
       <div class="pagination">
-        <el-pagination layout="sizes,prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :total="total" :page-size="pageSize" :page-sizes="pageSizes">
+        <el-pagination layout="sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :total="total" :page-size="pageSize" :page-sizes="pageSizes">
         </el-pagination>
       </div>
     </div>
@@ -82,6 +83,7 @@ export default {
       editRoles: [],
       roles: {},
       pageSize: 10,
+      create_article: api.article.create_article,
     }
   },
   mounted() {
@@ -89,11 +91,10 @@ export default {
   },
   methods: {
     async datas(filter, val) {
-      api.article.get_articles({ params: { filter: filter, paginate: this.pageSize, page: val } }).then((res) => {
+      api.article.get_articles.request({ params: { filter: filter, paginate: this.pageSize, page: val } }).then((res) => {
         var res = res.data.data;
         this.tableData = [...res.data];
         this.total = Number(res.total);
-        console.log(this.tableData);
       })
     },
     handleCurrentChange(val) {
@@ -109,6 +110,9 @@ export default {
       } else {
         this.datas();
       }
+    },
+    add() {
+      window.location.href = '#/articles/editor';
     },
     edit(index, id) {
       this.editTable = {};

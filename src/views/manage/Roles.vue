@@ -22,7 +22,7 @@
         <el-table-column prop="created_at" label="创建时间：" :align="align">
         </el-table-column>
         <el-table-column label="操作" width="220" :align="align">
-          <template slot-scope="scope">
+          <template scope="scope">
             <el-button size="small" @click="edit(scope.$index, scope.row.id)" icon="edit" v-has="has(edit_role)">编辑</el-button>
             <el-button size="small" type="danger" @click="del(scope.$index, scope.row.id)" icon="delete" v-has="has(delete_role)">删除</el-button>
           </template>

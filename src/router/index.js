@@ -46,6 +46,7 @@ export const asyncRouterMap = [
     icon: 'th-large',
     children: [
       { path: '/articles/index', component: _import('content/Articles'), name: '文章列表' },
+      { path: '/articles/editor', component: _import('content/Editor'), name: '文章编辑器' }
     ]
   }
 ]

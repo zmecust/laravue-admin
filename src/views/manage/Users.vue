@@ -15,27 +15,27 @@
         <el-table-column prop="id" label="id" :align="align" v-if="false">
         </el-table-column>
         <el-table-column prop="name" label="用户名：" :align="align">
-          <template slot-scope="scope">
+          <template scope="scope">
             <span class="link-type" @click="edit(scope.$index, scope.row.id)">{{scope.row.name}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="email" label="邮箱：" :align="align">
         </el-table-column>
         <el-table-column prop="modify_roles" label="角色：" :align="align">
-          <template slot-scope="scope">
+          <template scope="scope">
             <el-tag close-transition v-for="index in scope.row.roles" :key="index.id">{{index.description}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="articles_count" sortable label="发表文章数：" :align="align">
         </el-table-column>
         <el-table-column prop="is_confirmed" sortable label="是否激活：" :align="align">
-          <template slot-scope="scope">
+          <template scope="scope">
             <el-input v-show="scope.row.edit" size="small" v-model="scope.row.is_confirmed"></el-input>
             <span v-show="!scope.row.edit">{{ scope.row.is_confirmed }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="is_banned" sortable label="是否禁用：" :align="align">
-          <template slot-scope="scope">
+          <template scope="scope">
             <el-input v-show="scope.row.edit" size="small" v-model="scope.row.is_banned"></el-input>
             <span v-show="!scope.row.edit">{{ scope.row.is_banned }}</span>
           </template>
@@ -45,7 +45,7 @@
         <el-table-column prop="created_at" sortable label="创建时间：" :align="align">
         </el-table-column>
         <el-table-column label="操作" width="220" :align="align">
-          <template slot-scope="scope">
+          <template scope="scope">
             <el-button :type="scope.row.edit?'success':'primary'" @click='handerUpdate(scope.$index, scope.row.id, scope.row.edit=!scope.row.edit)' size="small" icon="edit" v-has="has(edit_user)">{{scope.row.edit?'完成':'编辑'}}</el-button>
             <el-button size="small" type="danger" @click="del(scope.$index, scope.row.id)" icon="delete" v-has="has(delete_user)">删除</el-button>
           </template>
@@ -101,13 +101,7 @@ export default {
           this.$set(v, 'edit', false)
           return v
         })
-        // this.tableData = [...res.data];
         this.total = Number(res.total);
-        // for (let key1 in this.tableData) {
-        //   for (let key2 in this.tableData[key1]['roles']) {
-        //     this.tableData[key1]['modify_roles'] = this.tableData[key1]['roles'][key2]['description'];
-        //   }
-        // }
       })
     },
     handleCurrentChange(val) {

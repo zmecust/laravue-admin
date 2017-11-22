@@ -22,7 +22,7 @@
         <el-table-column prop="uri" label="绑定路由名：" :align="align">
         </el-table-column>
         <el-table-column label="操作" width="220" :align="align">
-          <template slot-scope="scope">
+          <template scope="scope">
             <el-button size="small" @click="edit(scope.$index, scope.row.id)" icon="edit" v-has="has(edit_permission)">编辑</el-button>
             <el-button size="small" type="danger" @click="del(scope.$index, scope.row.id)" icon="delete" v-has="has(delete_permission)">删除</el-button>
           </template>
