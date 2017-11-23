@@ -142,6 +142,7 @@ export default {
       this.isIndeterminate = true;
       api.manage.group_permissions.request().then((res) => {
         this.groupPermissions = res.data.data;
+        console.log(this.groupPermissions);
       })
       api.manage.get_role.request(this.id).then((res) => {
         this.showEdit = true;

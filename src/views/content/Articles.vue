@@ -9,7 +9,7 @@
       </el-form>
     </div>
     <div class="table">
-      <el-button @click="add()" icon="plus" type="primary" class="add"  v-has="has(create_article)">创建文章</el-button>
+      <el-button @click="add()" icon="plus" type="primary" class="add" v-has="has(create_article)">创建文章</el-button>
       <el-table v-bind:data="tableData" border style="width: 100%" highlight-current-row :fit="listWidth">
         <el-table-column align="center" label="序号" width="80">
           <template scope="scope">
@@ -42,25 +42,11 @@
         </el-table-column>
         <el-table-column label="操作" width="220" :align="align">
           <template scope="scope">
-            <el-button :type="scope.row.edit?'success':'primary'" @click='handerUpdate(scope.$index, scope.row.id, scope.row.edit=!scope.row.edit)' size="small" icon="edit">{{scope.row.edit?'完成':'编辑'}}</el-button>
-            <el-button size="small" type="danger" @click="del(scope.$index, scope.row.id)" icon="delete">删除</el-button>
+            <el-button @click="edit(scope.$index, scope.row.id)" size="small" icon="edit" v-has="has(edit_article)">编辑</el-button>
+            <el-button size="small" type="danger" @click="del(scope.$index, scope.row.id)" icon="delete" v-has="has(delete_article)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog :title="dialogTitle" v-bind:close-on-click-modal="false" v-model="showEdit" v-bind:close-on-press-escape="true">
-        <el-form v-bind:model="editTable" ref="editForm" label-position="left" label-width="100px">
-          <el-form-item label="角色名：">
-            <el-select size="" class="select" multiple v-model="editRoles">
-              <el-option v-for="item in roles" :label="item.description" :value="item.description" :key="item">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" v-on:click="save" :loading="load">确 定</el-button>
-            <el-button type="primary" v-on:click="cancel">取 消</el-button>
-          </el-form-item>
-        </el-form>
-      </el-dialog>
       <div class="pagination">
         <el-pagination layout="sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :total="total" :page-size="pageSize" :page-sizes="pageSizes">
         </el-pagination>
@@ -84,6 +70,8 @@ export default {
       roles: {},
       pageSize: 10,
       create_article: api.article.create_article,
+      edit_article: api.article.edit_article,
+      delete_article: api.article.delete_article,
     }
   },
   mounted() {
@@ -112,21 +100,10 @@ export default {
       }
     },
     add() {
-      window.location.href = '#/articles/editor';
+      this.$router.push('/articles/editor#create');
     },
     edit(index, id) {
-      this.editTable = {};
-      this.id = id;
-      this.index = index;
-      this.dialogTitle = "编辑用户";
-      this.isAdd = false;
-      api.manage.get_roles().then((res) => {
-        this.roles = res.data.data.data;
-      })
-      api.manage.get_user(this.id).then((res) => {
-        this.editRoles = res.data.data;
-        this.showEdit = true;
-      })
+      this.$router.push('/articles/editor#edit/' + id);
     },
     del(index, id) {
       this.$confirm('确定要删除吗?', '提示', {
@@ -134,7 +111,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        api.manage.delete_user(id).then((res) => {
+        api.article.delete_article.request(id).then((res) => {
           if (1 == res.data.status) {
             this.$message({
               showClose: true,
@@ -157,35 +134,8 @@ export default {
         });
       });
     },
-    save() {
-      this.load = true;
-      api.manage.edit_user(this.id, { roles: this.editRoles }).then((res) => {
-        if (res.data.status == 0) {
-          this.messageType = "error"
-        } else {
-          this.messageType = "success"
-          //this.tableData.splice(this.index, 1, res.data.data);
-          this.datas();
-          this.load = false, this.showEdit = false
-        }
-        this.$message({
-          message: res.data.message,
-          type: this.messageType
-        });
-      })
-    },
-    cancel() {
-      this.editTable = {};
-      this.showEdit = false;
-      this.load = false
-    },
     submit() {
       this.datas(this.searchform.name)
-    },
-    handerUpdate(index, id) {
-      if (!this.tableData[index].edit) {
-        api.manage.edit_user(id, { is_confirmed: this.tableData[index].is_confirmed, is_banned: this.tableData[index].is_banned })
-      }
     }
   }
 }

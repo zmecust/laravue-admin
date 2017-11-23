@@ -22,6 +22,9 @@ function hasPermission(menus, route) {
  */
 function filterAsyncRouter(asyncRouterMap, menus) {
   const accessedRouters = asyncRouterMap.filter(route => {
+    if (route.noValidate) {
+      return true
+    }
     if (hasPermission(menus, route)) {
       if (route.children && route.children.length) {
         route.children = filterAsyncRouter(route.children, menus)

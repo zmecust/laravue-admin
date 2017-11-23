@@ -24,9 +24,9 @@ export const constantRouterMap = [
 
 export const asyncRouterMap = [
   {
-    path: '/parent/setting',
+    path: '/parent/permission',
     component: Layout,
-    name: '系统管理',
+    name: '权限管理',
     noDropdown: false,
     redirect: 'noredirect',
     icon: 'cog',
@@ -46,8 +46,16 @@ export const asyncRouterMap = [
     icon: 'th-large',
     children: [
       { path: '/articles/index', component: _import('content/Articles'), name: '文章列表' },
-      { path: '/articles/editor', component: _import('content/Editor'), name: '文章编辑器' }
+      { path: '/articles/editor', component: _import('content/Editor'), name: '文章编辑器', hidden: true, noValidate: true }
     ]
+  },
+  {
+    path: '/parent/setting',
+    component: Layout,
+    name: '系统管理',
+    noDropdown: false,
+    redirect: 'noredirect',
+    icon: 'th-large',
   }
 ]
 
