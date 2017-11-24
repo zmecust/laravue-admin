@@ -29,7 +29,7 @@
           <el-upload class="upload-demo" drag :action="upload_url" :show-file-list="false" :on-success="handleAvatarSuccess" :headers="headers">
             <img v-if="params.article_url" :src="params.article_url" class="avatar" style="width: 100%">
             <i v-else class="el-icon-upload"></i>
-            <div v-else class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+            <div v-if="! params.article_url" class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
           </el-upload>
           <div style="display: flex; padding: 20px 0 20px 0">
             <el-button v-on:click="cancel">取 消</el-button>
@@ -154,7 +154,7 @@ export default {
           tag: this.tags,
           is_hidden: this.params.is_hidden,
           title: this.params.title,
-          body: this.params.body,
+          body: document.getElementById('editor-md').value,
           category: this.params.category,
           article_url: this.params.article_url
         }
