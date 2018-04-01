@@ -126,8 +126,10 @@ export default {
                 "pagebreak", "||", "goto-line", "watch", "clear", "preview", "fullscreen"]
             },
             imageUpload: true,
+            crossDomainUpload : true,
             imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
             imageUploadURL: "https://api.laravue.org/api/v1/markdown/upload",
+            uploadCallbackURL : "https://admin.laravue.org",
             emoji: true
           });
         }
