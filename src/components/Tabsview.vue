@@ -12,43 +12,43 @@
 export default {
   computed: {
     visitedViews() {
-      return this.$store.state.app.visitedViews.slice(-6)
-    }
+      return this.$store.state.app.visitedViews.slice(-6);
+    },
   },
   methods: {
     closeViewTabs(view, $event) {
-      this.$store.dispatch('delVisitedViews', view).then((views) => {
+      this.$store.dispatch('delVisitedViews', view).then(views => {
         if (this.isActive(view.path)) {
-          const latestView = views.slice(-1)[0]
+          const latestView = views.slice(-1)[0];
           if (latestView) {
-            this.$router.push(latestView.path)
+            this.$router.push(latestView.path);
           } else {
-            this.$router.push('/')
+            this.$router.push('/');
           }
         }
-      })
-      $event.preventDefault()
+      });
+      $event.preventDefault();
     },
     generateRoute() {
       if (this.$route.matched[this.$route.matched.length - 1].name) {
-        return this.$route.matched[this.$route.matched.length - 1]
+        return this.$route.matched[this.$route.matched.length - 1];
       }
-      this.$route.matched[0].path = '/'
-      return this.$route.matched[0]
+      this.$route.matched[0].path = '/';
+      return this.$route.matched[0];
     },
     addViewTabs() {
-      this.$store.dispatch('addVisitedViews', this.generateRoute())
+      this.$store.dispatch('addVisitedViews', this.generateRoute());
     },
     isActive(path) {
-      return path === this.$route.path
-    }
+      return path === this.$route.path;
+    },
   },
   watch: {
     $route() {
-      this.addViewTabs()
-    }
-  }
-}
+      this.addViewTabs();
+    },
+  },
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

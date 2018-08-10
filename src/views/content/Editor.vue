@@ -56,55 +56,48 @@ export default {
         body: '',
         category: '',
         is_hidden: '',
-        article_url: ''
+        article_url: '',
       },
       upload_url: this.$http.options.root + '/article_image',
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-      options: [
-        { value: 'F', label: '是' },
-        { value: 'T', label: '否' }
-      ],
+      options: [{ value: 'F', label: '是' }, { value: 'T', label: '否' }],
       failure: '',
       tags: [],
       allTags: '',
       allCategories: '',
-    }
+    };
   },
   mounted() {
     if (window.location.hash.split('#')[2] == 'create') {
-      api.article.get_tags.request().then((res) => {
+      api.article.get_tags.request().then(res => {
         this.allTags = res.data.data;
       });
-      api.article.get_categories.request().then((res) => {
+      api.article.get_categories.request().then(res => {
         this.allCategories = res.data.data;
       });
-      $script(
-        [`${this.editorPath}js/jquery.min.js`], () => {
-          $script(`${this.editorPath}js/editormd.min.js`, () => {
-            this.initEditor();
-          });
-        }
-      )
+      $script([`${this.editorPath}js/jquery.min.js`], () => {
+        $script(`${this.editorPath}js/editormd.min.js`, () => {
+          this.initEditor();
+        });
+      });
     } else {
-      api.article.get_tags.request().then((res) => {
+      api.article.get_tags.request().then(res => {
         this.allTags = res.data.data;
-        api.article.get_categories.request().then((res) => {
+        api.article.get_categories.request().then(res => {
           this.allCategories = res.data.data;
-          api.article.get_article.request(window.location.hash.split('/')[3]).then((res) => {
+          api.article.get_article.request(window.location.hash.split('/')[3]).then(res => {
             for (let index in res.data.data.tags) {
               this.tags.push(res.data.data.tags[index].id);
             }
             this.params = res.data.data;
             this.params.category = res.data.data.category_id;
-            $script(
-              [`${this.editorPath}js/jquery.min.js`], () => {
-                $script(`${this.editorPath}js/editormd.min.js`, () => {
-                  this.initEditor();
-                });
-              }
-            )
+            $script([`${this.editorPath}js/jquery.min.js`], () => {
+              $script(`${this.editorPath}js/editormd.min.js`, () => {
+                this.initEditor();
+              });
+            });
           });
         });
       });
@@ -114,23 +107,60 @@ export default {
     initEditor() {
       this.$nextTick((editorMD = window.editormd) => {
         if (editorMD) {
-          editorMD("editor-md", {
-            width: "100%",
+          editorMD('editor-md', {
+            width: '100%',
             height: '90vh',
-            markdown: "",
+            markdown: '',
             path: `${this.editorPath}lib/`,
             toolbarIcons: function() {
-              return ["undo", "redo", "|", "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
-                "h1", "h2", "h3", "h4", "h5", "h6", "|", "list-ul", "list-ol", "hr", "|", "link", "reference-link",
-                "image", "code", "preformatted-text", "code-block", "table", "datetime", "emoji", "html-entities",
-                "pagebreak", "||", "goto-line", "watch", "clear", "preview", "fullscreen"]
+              return [
+                'undo',
+                'redo',
+                '|',
+                'bold',
+                'del',
+                'italic',
+                'quote',
+                'ucwords',
+                'uppercase',
+                'lowercase',
+                '|',
+                'h1',
+                'h2',
+                'h3',
+                'h4',
+                'h5',
+                'h6',
+                '|',
+                'list-ul',
+                'list-ol',
+                'hr',
+                '|',
+                'link',
+                'reference-link',
+                'image',
+                'code',
+                'preformatted-text',
+                'code-block',
+                'table',
+                'datetime',
+                'emoji',
+                'html-entities',
+                'pagebreak',
+                '||',
+                'goto-line',
+                'watch',
+                'clear',
+                'preview',
+                'fullscreen',
+              ];
             },
             imageUpload: true,
-            crossDomainUpload : true,
-            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-            imageUploadURL: "https://api.laravue.org/api/v1/markdown/upload",
-            uploadCallbackURL : "https://admin.laravue.org",
-            emoji: true
+            crossDomainUpload: true,
+            imageFormats: ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'],
+            imageUploadURL: 'https://api.laravue.org/api/v1/markdown/upload',
+            uploadCallbackURL: 'https://admin.laravue.org',
+            emoji: true,
           });
         }
       });
@@ -143,12 +173,12 @@ export default {
     save() {
       if (window.location.hash.split('#')[2] == 'create') {
         this.params.tag = this.tags;
-        api.article.create_article.request(this.params).then((res) => {
+        api.article.create_article.request(this.params).then(res => {
           if (res.data.status == 1) {
-            this.messageType = "success"
-            this.$router.go(-1);   
+            this.messageType = 'success';
+            this.$router.go(-1);
           } else {
-            this.messageType = "error"
+            this.messageType = 'error';
           }
         });
       } else {
@@ -158,31 +188,31 @@ export default {
           title: this.params.title,
           body: document.getElementById('editor-md').value,
           category: this.params.category,
-          article_url: this.params.article_url
-        }
-        api.article.edit_article.request(window.location.hash.split('/')[3], form).then((res) => {
+          article_url: this.params.article_url,
+        };
+        api.article.edit_article.request(window.location.hash.split('/')[3], form).then(res => {
           if (res.data.status == 1) {
-            this.messageType = "success"
+            this.messageType = 'success';
             this.$router.go(-1);
           } else {
-            this.messageType = "error"
+            this.messageType = 'error';
           }
         });
       }
       this.$message({
         message: res.data.message,
-        type: this.messageType
+        type: this.messageType,
       });
     },
     cancel() {
       this.$router.go(-1);
     },
-  }
-}
+  },
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-@import "../../../static/markdown/css/editormd.min.css";
+@import '../../../static/markdown/css/editormd.min.css';
 
 [v-cloak] {
   display: none;

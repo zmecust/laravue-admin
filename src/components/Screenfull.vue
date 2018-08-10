@@ -5,42 +5,42 @@
 </template>
 
 <script>
-import screenfull from 'screenfull'
+import screenfull from 'screenfull';
 
 export default {
   name: 'hamburger',
   props: {
     width: {
       type: Number,
-      default: 22
+      default: 22,
     },
     height: {
       type: Number,
-      default: 22
+      default: 22,
     },
     fill: {
       type: String,
-      default: '#48576a'
-    }
+      default: '#48576a',
+    },
   },
   data() {
     return {
-      isFullscreen: false
-    }
+      isFullscreen: false,
+    };
   },
   methods: {
     click() {
       if (!screenfull.enabled) {
         this.$message({
           message: 'you browser can not work',
-          type: 'warning'
-        })
-        return false
+          type: 'warning',
+        });
+        return false;
       }
-      screenfull.toggle()
-    }
-  }
-}
+      screenfull.toggle();
+    },
+  },
+};
 </script>
 
 <style scoped>

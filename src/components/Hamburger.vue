@@ -14,14 +14,14 @@ export default {
   props: {
     isActive: {
       type: Boolean,
-      default: false
+      default: false,
     },
     toggleClick: {
       type: Function,
-      default: null
-    }
-  }
-}
+      default: null,
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -31,7 +31,7 @@ export default {
   width: 20px;
   height: 20px;
   transform: rotate(0deg);
-  transition: .38s;
+  transition: 0.38s;
   transform-origin: 50% 50%;
 }
 

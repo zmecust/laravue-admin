@@ -4,5 +4,5 @@ const getters = {
   permission_routers: state => state.permission.routers,
   addRouters: state => state.permission.addRouters,
   button_permission: state => state.account.button_permission,
-}
-export default getters
+};
+export default getters;

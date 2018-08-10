@@ -24,5 +24,5 @@ Vue.http.interceptors.push((request, next) => {
 export default {
   account,
   manage,
-  article
-}
+  article,
+};

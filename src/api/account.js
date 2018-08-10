@@ -5,9 +5,9 @@ export default {
   login(res) {
     var params;
     params = {
-      'login': res.username,
-      'password': res.password
-    }
+      login: res.username,
+      password: res.password,
+    };
     return Vue.http.post('user/login', params);
   },
   // 登出
@@ -17,5 +17,5 @@ export default {
   // 获取菜单
   get_menu() {
     return Vue.http.get('admin/menu');
-  }
-}
+  },
+};

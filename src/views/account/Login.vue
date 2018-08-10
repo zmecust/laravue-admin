@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { isvalidUsername } from '@/utils/validate'
+import { isvalidUsername } from '@/utils/validate';
 import { mapState, mapMutations } from 'vuex';
 
 export default {
@@ -34,62 +34,65 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!value) {
-        callback(new Error('请输入正确的用户名'))
+        callback(new Error('请输入正确的用户名'));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('密码不能小于6位'))
+        callback(new Error('密码不能小于6位'));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     return {
       loginForm: {
         username: '',
-        password: ''
+        password: '',
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
       },
       pwdType: 'password',
       loading: false,
-      showDialog: false
-    }
+      showDialog: false,
+    };
   },
   methods: {
     showPwd() {
       if (this.pwdType === 'password') {
-        this.pwdType = ''
+        this.pwdType = '';
       } else {
-        this.pwdType = 'password'
+        this.pwdType = 'password';
       }
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true
-          this.$store.dispatch('accountLoginSubmit', this.loginForm).then(() => {
-            this.loading = false
-            // this.showDialog = true
-          }).catch(() => {
-            this.loading = false
-          })
+          this.loading = true;
+          this.$store
+            .dispatch('accountLoginSubmit', this.loginForm)
+            .then(() => {
+              this.loading = false;
+              // this.showDialog = true
+            })
+            .catch(() => {
+              this.loading = false;
+            });
         } else {
-          console.log('error submit!!')
-          return false
+          console.log('error submit!!');
+          return false;
         }
-      })
+      });
     },
     successWatcher(val, oldVal) {
       if (val && !oldVal) {
         const redirectUrl = this.$route.query.redirect_url || '/';
         this.$router.push(redirectUrl);
       }
-    }
+    },
   },
   computed: mapState({
     success: state => state.account.login.success,
@@ -97,15 +100,15 @@ export default {
   }),
   watch: {
     success: 'successWatcher',
-  }
-}
+  },
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-@import "../../../static/style/mixin.scss";
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray:#eee;
+@import '../../../static/style/mixin.scss';
+$bg: #2d3a4b;
+$dark_gray: #889aa4;
+$light_gray: #eee;
 
 .login-container {
   @include relative;

@@ -18,7 +18,7 @@
 
           <router-link v-else :to="child.path">
             <el-menu-item :index="child.path">
-              {{ child.name }}</span>
+              <span>{{ child.name }}</span>
             </el-menu-item>
           </router-link>
 
@@ -35,8 +35,8 @@ export default {
   name: 'SidebarItem',
   props: {
     routes: {
-      type: Array
-    }
-  }
-}
+      type: Array,
+    },
+  },
+};
 </script>

@@ -76,7 +76,7 @@ export default {
     return {
       editTable: {
         description: '',
-        name: ''
+        name: '',
       },
       groupPermissions: null,
       permissions: [],
@@ -84,19 +84,19 @@ export default {
       isIndeterminate: true,
       create_role: api.manage.create_role,
       edit_role: api.manage.edit_role,
-      delete_role: api.manage.delete_role
-    }
+      delete_role: api.manage.delete_role,
+    };
   },
   mounted() {
     this.datas();
   },
   methods: {
     async datas(filter, val) {
-      api.manage.get_roles.request({ params: { filter: filter, paginate: this.pageSize, page: val } }).then((res) => {
+      api.manage.get_roles.request({ params: { filter: filter, paginate: this.pageSize, page: val } }).then(res => {
         var res = res.data.data;
         this.tableData = [...res.data];
         this.total = Number(res.total);
-      })
+      });
     },
     handleCurrentChange(val) {
       if (this.searchform.name) {
@@ -126,110 +126,114 @@ export default {
       this.editTable = {};
       this.isAdd = true;
       this.showEdit = true;
-      this.dialogTitle = "新增角色";
+      this.dialogTitle = '新增角色';
       this.permissions = [];
       this.isIndeterminate = true;
-      api.manage.group_permissions.request().then((res) => {
+      api.manage.group_permissions.request().then(res => {
         this.groupPermissions = res.data.data;
-      })
+      });
     },
     edit(index, id) {
       this.editTable = {};
       this.id = id;
       this.index = index;
-      this.dialogTitle = "编辑角色";
+      this.dialogTitle = '编辑角色';
       this.isAdd = false;
       this.isIndeterminate = true;
-      api.manage.group_permissions.request().then((res) => {
+      api.manage.group_permissions.request().then(res => {
         this.groupPermissions = res.data.data;
-        console.log(this.groupPermissions);
-      })
-      api.manage.get_role.request(this.id).then((res) => {
+      });
+      api.manage.get_role.request(this.id).then(res => {
         this.showEdit = true;
         this.editTable = res.data.data;
         this.permissions = res.data.data.permissions;
-      })
+      });
     },
     del(index, id) {
       this.$confirm('确定要删除吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        api.manage.delete_role.request(id).then((res) => {
-          if (1 == res.data.status) {
-            this.$message({
-              showClose: true,
-              message: res.data.message,
-              type: 'success'
-            });
-            this.tableData.splice(index, 1);
-          } else {
-            this.$message({
-              showClose: true,
-              message: res.data.message,
-              type: 'error'
-            });
-          }
+        type: 'warning',
+      })
+        .then(() => {
+          api.manage.delete_role.request(id).then(res => {
+            if (1 == res.data.status) {
+              this.$message({
+                showClose: true,
+                message: res.data.message,
+                type: 'success',
+              });
+              this.tableData.splice(index, 1);
+            } else {
+              this.$message({
+                showClose: true,
+                message: res.data.message,
+                type: 'error',
+              });
+            }
+          });
         })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除',
+          });
         });
-      });
     },
     save() {
       this.load = true;
       if (this.isAdd) {
-        api.manage.create_role.request({
-          permission: this.permissions,
-          name: this.editTable.name,
-          description: this.editTable.description,
-        }).then((res) => {
-          if (res.data.status == 0) {
-            this.messageType = "error"
-          } else {
-            this.messageType = "success"
-            this.tableData.push(res.data.data);
-          }
-          this.$message({
-            message: res.data.message,
-            type: this.messageType
+        api.manage.create_role
+          .request({
+            permission: this.permissions,
+            name: this.editTable.name,
+            description: this.editTable.description,
+          })
+          .then(res => {
+            if (res.data.status == 0) {
+              this.messageType = 'error';
+            } else {
+              this.messageType = 'success';
+              this.tableData.push(res.data.data);
+            }
+            this.$message({
+              message: res.data.message,
+              type: this.messageType,
+            });
+            (this.load = false), (this.showEdit = false);
           });
-          this.load = false, this.showEdit = false
-        })
-
       } else {
-        api.manage.edit_role.request(this.id, {
-          permission: this.permissions,
-          name: this.editTable.name,
-          description: this.editTable.description,
-        }).then((res) => {
-          if (res.data.status == 0) {
-            this.messageType = "error"
-          } else {
-            this.messageType = "success"
-            this.tableData.splice(this.index, 1, res.data.data);
-          }
-          this.$message({
-            message: res.data.message,
-            type: this.messageType
+        api.manage.edit_role
+          .request(this.id, {
+            permission: this.permissions,
+            name: this.editTable.name,
+            description: this.editTable.description,
+          })
+          .then(res => {
+            if (res.data.status == 0) {
+              this.messageType = 'error';
+            } else {
+              this.messageType = 'success';
+              this.tableData.splice(this.index, 1, res.data.data);
+            }
+            this.$message({
+              message: res.data.message,
+              type: this.messageType,
+            });
+            (this.load = false), (this.showEdit = false);
           });
-          this.load = false, this.showEdit = false
-        })
       }
     },
     cancel() {
       this.editTable = {};
       this.showEdit = false;
-      this.load = false
+      this.load = false;
     },
     submit() {
-      this.datas(this.searchform.name)
-    }
-  }
-}
+      this.datas(this.searchform.name);
+    },
+  },
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
@@ -243,7 +247,7 @@ export default {
     p {
       font-size: 16px;
       font-weight: bold;
-      color: #20A0FF;
+      color: #20a0ff;
       padding-bottom: 0;
       margin-bottom: 0;
     }

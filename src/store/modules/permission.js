@@ -9,9 +9,9 @@ import store from '../index';
  */
 function hasPermission(menus, route) {
   if (route.path) {
-    return menus.some(menu => route.path == menu)
+    return menus.some(menu => route.path == menu);
   } else {
-    return true
+    return true;
   }
 }
 
@@ -23,39 +23,39 @@ function hasPermission(menus, route) {
 function filterAsyncRouter(asyncRouterMap, menus) {
   const accessedRouters = asyncRouterMap.filter(route => {
     if (route.noValidate) {
-      return true
+      return true;
     }
     if (hasPermission(menus, route)) {
       if (route.children && route.children.length) {
-        route.children = filterAsyncRouter(route.children, menus)
+        route.children = filterAsyncRouter(route.children, menus);
       }
-      return true
+      return true;
     }
-    return false
-  })
-  return accessedRouters
+    return false;
+  });
+  return accessedRouters;
 }
 
 const permission = {
   state: {
     routers: constantRouterMap,
-    addRouters: []
+    addRouters: [],
   },
   mutations: {
     [types.SET_ROUTERS]: (state, routers) => {
-      state.addRouters = routers
-      state.routers = constantRouterMap.concat(routers)
-    }
+      state.addRouters = routers;
+      state.routers = constantRouterMap.concat(routers);
+    },
   },
   actions: {
     generateRoutes({ commit }, data) {
       return new Promise(resolve => {
-        let accessedRouters = filterAsyncRouter(asyncRouterMap, data.menus)
-        commit(types.SET_ROUTERS, accessedRouters)
-        resolve()
-      })
-    }
-  }
-}
+        let accessedRouters = filterAsyncRouter(asyncRouterMap, data.menus);
+        commit(types.SET_ROUTERS, accessedRouters);
+        resolve();
+      });
+    },
+  },
+};
 
-export default permission
+export default permission;

@@ -72,31 +72,32 @@ export default {
       create_article: api.article.create_article,
       edit_article: api.article.edit_article,
       delete_article: api.article.delete_article,
-    }
+    };
   },
-  mounted() {
-    this.datas();
+  async mounted() {
+    await this.datas();
   },
   methods: {
     async datas(filter, val) {
-      api.article.get_articles.request({ params: { filter: filter, paginate: this.pageSize, page: val } }).then((res) => {
-        var res = res.data.data;
-        this.tableData = [...res.data];
-        this.total = Number(res.total);
-      })
+      const articles = await api.article.get_articles.request({
+        params: { filter: filter, paginate: this.pageSize, page: val },
+      });
+      var res = articles.data.data;
+      this.tableData = [...res.data];
+      this.total = Number(res.total);
     },
-    handleCurrentChange(val) {
+    async handleCurrentChange(val) {
       if (this.searchform.name) {
-        this.datas(this.searchform.name, val);
+        await this.datas(this.searchform.name, val);
       }
-      this.datas(undefined, val);
+      await this.datas(undefined, val);
     },
-    handleSizeChange(val) {
+    async handleSizeChange(val) {
       this.pageSize = val;
       if (this.searchform.name) {
-        this.datas(this.searchform.name);
+        await this.datas(this.searchform.name);
       } else {
-        this.datas();
+        await this.datas();
       }
     },
     add() {
@@ -109,36 +110,38 @@ export default {
       this.$confirm('确定要删除吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        api.article.delete_article.request(id).then((res) => {
-          if (1 == res.data.status) {
-            this.$message({
-              showClose: true,
-              message: res.data.message,
-              type: 'success'
-            });
-            this.tableData.splice(index, 1);
-          } else {
-            this.$message({
-              showClose: true,
-              message: res.data.message,
-              type: 'error'
-            });
-          }
+        type: 'warning',
+      })
+        .then(() => {
+          api.article.delete_article.request(id).then(res => {
+            if (1 == res.data.status) {
+              this.$message({
+                showClose: true,
+                message: res.data.message,
+                type: 'success',
+              });
+              this.tableData.splice(index, 1);
+            } else {
+              this.$message({
+                showClose: true,
+                message: res.data.message,
+                type: 'error',
+              });
+            }
+          });
         })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除',
+          });
         });
-      });
     },
-    submit() {
-      this.datas(this.searchform.name)
-    }
-  }
-}
+    async submit() {
+      await this.datas(this.searchform.name);
+    },
+  },
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

@@ -9,25 +9,25 @@
 </template>
 
 <script>
-import { Navbar, Sidebar, AppMain } from '@/components/layout'
+import { Navbar, Sidebar, AppMain } from '@/components/layout';
 
 export default {
   name: 'layout',
   components: {
     Navbar,
     Sidebar,
-    AppMain
+    AppMain,
   },
   computed: {
     sidebar() {
-      return this.$store.state.app.sidebar
-    }
-  }
-}
+      return this.$store.state.app.sidebar;
+    },
+  },
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-@import "../../../static/style/mixin.scss";
+@import '../../../static/style/mixin.scss';
 .app-wrapper {
   @include clearfix;
   position: relative;
@@ -53,7 +53,7 @@ export default {
     z-index: 1001;
     overflow-y: auto;
     &::-webkit-scrollbar {
-      display: none
+      display: none;
     }
   }
   .main-container {

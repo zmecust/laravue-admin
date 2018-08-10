@@ -1,5 +1,5 @@
 export default {
-  bind: function (el, binding) {
+  bind: (el, binding) => {
     if (!binding.value) {
       el.disabled = true;
       el.style.color = '#bfcbd9';
@@ -7,6 +7,7 @@ export default {
       el.style.backgroundImage = 'none';
       el.style.backgroundColor = '#eef1f6';
       el.style.borderColor = '#d1dbe5';
+      // el.parentNode.removeChild(el);
     }
-  }
-}
+  },
+};

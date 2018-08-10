@@ -87,22 +87,22 @@ export default {
       editRoles: [],
       roles: {},
       edit_user: api.manage.edit_user,
-      delete_user: api.manage.delete_user
-    }
+      delete_user: api.manage.delete_user,
+    };
   },
   mounted() {
     this.datas();
   },
   methods: {
     async datas(filter, val) {
-      api.manage.get_users.request({ params: { filter: filter, paginate: this.pageSize, page: val } }).then((res) => {
+      api.manage.get_users.request({ params: { filter: filter, paginate: this.pageSize, page: val } }).then(res => {
         var res = res.data.data;
         this.tableData = res.data.map(v => {
-          this.$set(v, 'edit', false)
-          return v
-        })
+          this.$set(v, 'edit', false);
+          return v;
+        });
         this.total = Number(res.total);
-      })
+      });
     },
     handleCurrentChange(val) {
       if (this.searchform.name) {
@@ -122,77 +122,82 @@ export default {
       this.editTable = {};
       this.id = id;
       this.index = index;
-      this.dialogTitle = "编辑用户";
+      this.dialogTitle = '编辑用户';
       this.isAdd = false;
-      api.manage.get_roles.request().then((res) => {
+      api.manage.get_roles.request().then(res => {
         this.roles = res.data.data.data;
-      })
-      api.manage.get_user.request(this.id).then((res) => {
+      });
+      api.manage.get_user.request(this.id).then(res => {
         this.editRoles = res.data.data;
         this.showEdit = true;
-      })
+      });
     },
     del(index, id) {
       this.$confirm('确定要删除吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        api.manage.delete_user.request(id).then((res) => {
-          if (1 == res.data.status) {
-            this.$message({
-              showClose: true,
-              message: res.data.message,
-              type: 'success'
-            });
-            this.tableData.splice(index, 1);
-          } else {
-            this.$message({
-              showClose: true,
-              message: res.data.message,
-              type: 'error'
-            });
-          }
+        type: 'warning',
+      })
+        .then(() => {
+          api.manage.delete_user.request(id).then(res => {
+            if (1 == res.data.status) {
+              this.$message({
+                showClose: true,
+                message: res.data.message,
+                type: 'success',
+              });
+              this.tableData.splice(index, 1);
+            } else {
+              this.$message({
+                showClose: true,
+                message: res.data.message,
+                type: 'error',
+              });
+            }
+          });
         })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除',
+          });
         });
-      });
     },
     save() {
       this.load = true;
-      api.manage.edit_user.request(this.id, { roles: this.editRoles }).then((res) => {
+      api.manage.edit_user.request(this.id, { roles: this.editRoles }).then(res => {
         if (res.data.status == 0) {
-          this.messageType = "error"
+          this.messageType = 'error';
         } else {
-          this.messageType = "success"
+          this.messageType = 'success';
           //this.tableData.splice(this.index, 1, res.data.data);
           this.datas();
-          this.load = false, this.showEdit = false
+          (this.load = false), (this.showEdit = false);
         }
         this.$message({
           message: res.data.message,
-          type: this.messageType
+          type: this.messageType,
         });
-      })
+      });
     },
     cancel() {
       this.editTable = {};
       this.showEdit = false;
-      this.load = false
+      this.load = false;
     },
     submit() {
-      this.datas(this.searchform.name)
+      this.datas(this.searchform.name);
     },
     handerUpdate(index, id) {
       if (!this.tableData[index].edit) {
-        api.manage.edit_user.request(id, { is_confirmed: this.tableData[index].is_confirmed, is_banned: this.tableData[index].is_banned })
+        api.manage.edit_user.request(id, {
+          is_confirmed: this.tableData[index].is_confirmed,
+          is_banned: this.tableData[index].is_banned,
+        });
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

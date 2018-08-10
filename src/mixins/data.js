@@ -7,7 +7,7 @@ export default {
       tableData: [],
       total: 0,
       listWidth: true,
-      align: "center",
+      align: 'center',
       showEdit: false,
       isAdd: false,
       id: 0,
@@ -17,9 +17,9 @@ export default {
       load: false,
       searchform: {
         name: '',
-        state: ''
+        state: '',
       },
       messageType: null,
-    }
-  }
-}
+    };
+  },
+};

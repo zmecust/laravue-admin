@@ -66,23 +66,25 @@ export default {
       editTable: {
         display_name: '',
         name: '',
-        uri: ''
+        uri: '',
       },
       create_permission: api.manage.create_permission,
       edit_permission: api.manage.edit_permission,
-      delete_permission: api.manage.delete_permission
-    }
+      delete_permission: api.manage.delete_permission,
+    };
   },
   mounted() {
     this.datas();
   },
   methods: {
     async datas(filter, val) {
-      api.manage.get_permissions.request({ params: { filter: filter, paginate: this.pageSize, page: val } }).then((res) => {
-        var res = res.data.data;
-        this.tableData = [...res.data];
-        this.total = Number(res.total);
-      })
+      api.manage.get_permissions
+        .request({ params: { filter: filter, paginate: this.pageSize, page: val } })
+        .then(res => {
+          var res = res.data.data;
+          this.tableData = [...res.data];
+          this.total = Number(res.total);
+        });
     },
     handleCurrentChange(val) {
       if (this.searchform.name) {
@@ -102,91 +104,92 @@ export default {
       this.editTable = {};
       this.id = id;
       this.index = index;
-      this.dialogTitle = "编辑权限";
+      this.dialogTitle = '编辑权限';
       this.isAdd = false;
-      api.manage.get_permission.request(this.id).then((res) => {
+      api.manage.get_permission.request(this.id).then(res => {
         this.showEdit = true;
         this.editTable = res.data.data;
-      })
+      });
     },
     del(index, id) {
       this.$confirm('确定要删除吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        api.manage.delete_permission.request(id).then((res) => {
-          if (1 == res.data.status) {
-            this.$message({
-              showClose: true,
-              message: res.data.message,
-              type: 'success'
-            });
-            this.tableData.splice(index, 1);
-          } else {
-            this.$message({
-              showClose: true,
-              message: res.data.message,
-              type: 'error'
-            });
-          }
+        type: 'warning',
+      })
+        .then(() => {
+          api.manage.delete_permission.request(id).then(res => {
+            if (1 == res.data.status) {
+              this.$message({
+                showClose: true,
+                message: res.data.message,
+                type: 'success',
+              });
+              this.tableData.splice(index, 1);
+            } else {
+              this.$message({
+                showClose: true,
+                message: res.data.message,
+                type: 'error',
+              });
+            }
+          });
         })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除',
+          });
         });
-      });
     },
     save() {
       this.load = true;
       if (this.isAdd) {
-        api.manage.create_permission.request(this.editTable).then((res) => {
+        api.manage.create_permission.request(this.editTable).then(res => {
           if (res.data.status == 0) {
-            this.messageType = "error"
+            this.messageType = 'error';
           } else {
-            this.messageType = "success"
+            this.messageType = 'success';
             this.tableData.push(res.data.data);
           }
           this.$message({
             message: res.data.message,
-            type: this.messageType
+            type: this.messageType,
           });
-          this.load = false, this.showEdit = false
-        })
-
+          (this.load = false), (this.showEdit = false);
+        });
       } else {
-        api.manage.edit_permission.request(this.id, this.editTable).then((res) => {
+        api.manage.edit_permission.request(this.id, this.editTable).then(res => {
           if (res.data.status == 0) {
-            this.messageType = "error"
+            this.messageType = 'error';
           } else {
-            this.messageType = "success"
+            this.messageType = 'success';
             this.tableData.splice(this.index, 1, res.data.data);
           }
           this.$message({
             message: res.data.message,
-            type: this.messageType
+            type: this.messageType,
           });
-          this.load = false, this.showEdit = false
-        })
+          (this.load = false), (this.showEdit = false);
+        });
       }
     },
     cancel() {
       this.editTable = {};
       this.showEdit = false;
-      this.load = false
+      this.load = false;
     },
     add() {
       this.editTable = {};
       this.isAdd = true;
       this.showEdit = true;
-      this.dialogTitle = "新增权限";
+      this.dialogTitle = '新增权限';
     },
     submit() {
-      this.datas(this.searchform.name)
+      this.datas(this.searchform.name);
     },
   },
-}
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

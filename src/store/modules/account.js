@@ -22,13 +22,13 @@ export default {
     },
     login: {
       success: false,
-      failure: null
+      failure: null,
     },
     register: {
       success: false,
-      failure: null
+      failure: null,
     },
-    button_permission: ''
+    button_permission: '',
   },
   mutations: {
     ACCOUNT_AUTH_STATUS_CHANGED: (state, data) => {
@@ -48,14 +48,14 @@ export default {
       localStorage.setItem(AUTH_USER_ID, data.data.id);
       localStorage.setItem(AUTH_USER, JSON.stringify(data.data));
     },
-    ACCOUNT_LOGIN_SUCCESS: (state) => {
+    ACCOUNT_LOGIN_SUCCESS: state => {
       Vue.set(state.login, 'success', true);
     },
     ACCOUNT_LOGIN_FAILURE: (state, data) => {
       Vue.set(state.login, 'success', false);
       Vue.set(state.login, 'failure', data);
     },
-    ACCOUNT_REGISTER_SUCCESS: (state) => {
+    ACCOUNT_REGISTER_SUCCESS: state => {
       Vue.set(state.register, 'success', true);
     },
     ACCOUNT_REGISTER_FAILURE: (state, data) => {
@@ -64,38 +64,38 @@ export default {
     },
     BUTTON_PERMISSION: (state, data) => {
       Vue.set(state, 'button_permission', data);
-    }
+    },
   },
   actions: {
     accountLoginSubmit({ commit }, params) {
-      api.account.login(params).then((response) => {
+      api.account.login(params).then(response => {
         if (response.data.status) {
           commit(types.ACCOUNT_AUTH_STATUS_CHANGED, response.data);
           commit(types.ACCOUNT_LOGIN_SUCCESS);
         } else {
           commit(types.ACCOUNT_LOGIN_FAILURE, response.data);
         }
-      })
+      });
     },
     accountLogoutSubmit({ commit }) {
-      api.account.logout().then((response) => {
+      api.account.logout().then(response => {
         commit(types.ACCOUNT_AUTH_STATUS_CHANGED, { status: 0 });
       });
     },
     accountRegisterSubmit({ commit }, params) {
-      api.account.register(params).then((response) => {
+      api.account.register(params).then(response => {
         if (response.data.status) {
           //commit(types.ACCOUNT_AUTH_STATUS_CHANGED, response.data);
           commit(types.ACCOUNT_REGISTER_SUCCESS);
         } else {
           commit(types.ACCOUNT_REGISTER_FAILURE, response.data);
         }
-      })
+      });
     },
     button_permission({ commit }) {
-      api.manage.button_permission.request().then((response) => {
+      api.manage.button_permission.request().then(response => {
         commit(types.BUTTON_PERMISSION, response.data.data);
       });
-    }
-  }
-}
+    },
+  },
+};
