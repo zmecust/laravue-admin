@@ -1,40 +1,68 @@
 <template>
   <div class="editor" v-cloak>
     <el-row :gutter="20">
-      <el-col :span="18">
-        <div id="editor-md" style="width: 100%">
-          <textarea id="body" name="body" style="display:none">{{ params.body }}</textarea>
-        </div>
-      </el-col>
       <el-col :span="6">
         <div class="title">
           <p>文章 title：</p>
           <el-input class="el-input" v-model="params.title" placeholder="文章 title"></el-input>
           <p>文章类别：</p>
           <el-select class="el-input" v-model="params.category" placeholder="请选择文章类别">
-            <el-option v-for="item in allCategories" :key="item.id" :label="item.name" :value="item.id">
-            </el-option>
+            <el-option
+              v-for="item in allCategories"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
           </el-select>
           <p>文章标签：</p>
-          <el-select class="el-input" v-model="tags" multiple filterable allow-create placeholder="请选择文章标签">
-            <el-option v-for="item in allTags" :key="item.id" :label="item.name" :value="item.id">
-            </el-option>
+          <el-select
+            class="el-input"
+            v-model="tags"
+            multiple
+            filterable
+            allow-create
+            placeholder="请选择文章标签"
+          >
+            <el-option v-for="item in allTags" :key="item.id" :label="item.name" :value="item.id"></el-option>
           </el-select>
           <p>是否隐藏：</p>
           <el-select class="el-input" v-model="params.is_hidden" placeholder="是否隐藏">
-            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
           </el-select>
           <p>插入封面：</p>
-          <el-upload class="upload-demo" drag :action="upload_url" :show-file-list="false" :on-success="handleAvatarSuccess" :headers="headers">
-            <img v-if="params.article_url" :src="params.article_url" class="avatar" style="width: 100%">
+          <el-upload
+            drag
+            :action="upload_url"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :headers="headers"
+          >
+            <img
+              v-if="params.article_url"
+              :src="params.article_url"
+              class="avatar"
+              style="width: 100%"
+            />
             <i v-else class="el-icon-upload"></i>
-            <div v-if="! params.article_url" class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+            <div v-if="! params.article_url" class="el-upload__text">
+              将文件拖到此处，或
+              <em>点击上传</em>
+            </div>
           </el-upload>
           <div style="display: flex; padding: 20px 0 20px 0">
             <el-button v-on:click="cancel">取 消</el-button>
             <el-button type="primary" v-on:click="save">保 存</el-button>
           </div>
+        </div>
+      </el-col>
+      <el-col :span="18">
+        <div id="editor-md" style="width: 100%">
+          <textarea id="body" name="body" style="display:none">{{ params.body }}</textarea>
         </div>
       </el-col>
     </el-row>
@@ -62,7 +90,7 @@ export default {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-      options: [{ value: 'F', label: '是' }, { value: 'T', label: '否' }],
+      options: [{ value: 'F', label: '否' }, { value: 'T', label: '是' }],
       failure: '',
       tags: [],
       allTags: '',
@@ -170,34 +198,33 @@ export default {
         this.params.article_url = response.data.url;
       }
     },
-    save() {
+    async save() {
+      let res;
       if (window.location.hash.split('#')[2] == 'create') {
         this.params.tag = this.tags;
-        api.article.create_article.request(this.params).then(res => {
-          if (res.data.status == 1) {
-            this.messageType = 'success';
-            this.$router.go(-1);
-          } else {
-            this.messageType = 'error';
-          }
-        });
+        res = await api.article.create_article.request(this.params);
+        if (res.data.status === 1) {
+          this.messageType = 'success';
+          this.$router.go(-1);
+        } else {
+          this.messageType = 'error';
+        }
       } else {
         let form = {
           tag: this.tags,
           is_hidden: this.params.is_hidden,
           title: this.params.title,
-          body: document.getElementById('editor-md').value,
+          body: document.getElementsByTagName('textarea')[0].innerHTML,
           category: this.params.category,
           article_url: this.params.article_url,
         };
-        api.article.edit_article.request(window.location.hash.split('/')[3], form).then(res => {
-          if (res.data.status == 1) {
-            this.messageType = 'success';
-            this.$router.go(-1);
-          } else {
-            this.messageType = 'error';
-          }
-        });
+        res = await api.article.edit_article.request(window.location.hash.split('/')[3], form);
+        if (res.data.status === 1) {
+          this.messageType = 'success';
+          this.$router.go(-1);
+        } else {
+          this.messageType = 'error';
+        }
       }
       this.$message({
         message: res.data.message,

@@ -1,11 +1,28 @@
 <template>
   <div class="content">
     <div class="table">
-      <el-button @click="add()" icon="plus" type="primary" class="add" v-has="has(get_all_menus)">添加一级菜单</el-button>
-      <el-tree :data="data2" :props="defaultProps" node-key="id" default-expand-all :expand-on-click-node="false" :render-content="renderContent">
-      </el-tree>
+      <el-button
+        @click="add()"
+        icon="plus"
+        type="primary"
+        class="add"
+        v-has="has(get_all_menus)"
+      >添加一级菜单</el-button>
+      <el-tree
+        :data="data2"
+        :props="defaultProps"
+        node-key="id"
+        default-expand-all
+        :expand-on-click-node="false"
+        :render-content="renderContent"
+      ></el-tree>
     </div>
-    <el-dialog :title="dialogTitle" v-bind:close-on-click-modal="false" v-model="showEdit" v-bind:close-on-press-escape="true">
+    <el-dialog
+      :title="dialogTitle"
+      v-bind:close-on-click-modal="false"
+      v-model="showEdit"
+      v-bind:close-on-press-escape="true"
+    >
       <el-form v-bind:model="editTable" ref="editForm" label-position="left" label-width="100px">
         <el-form-item label="菜单名称：">
           <el-input v-model="editTable.display_name"></el-input>

@@ -1,26 +1,51 @@
 <template>
   <div class="login-container">
-    <el-form class="card-box login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
+    <el-form
+      class="card-box login-form"
+      autocomplete="on"
+      :model="loginForm"
+      :rules="loginRules"
+      ref="loginForm"
+      label-position="left"
+    >
       <h3 class="title">后台系统登录</h3>
 
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
           <i class="fa fa-user" aria-hidden="true"></i>
         </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="用户名" />
+        <el-input
+          name="username"
+          type="text"
+          v-model="loginForm.username"
+          autocomplete="on"
+          placeholder="用户名"
+        />
       </el-form-item>
 
       <el-form-item prop="password">
         <span class="svg-container">
           <i class="fa fa-lock fa-lg" aria-hidden="true"></i>
         </span>
-        <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="密码" />
-        <span class='show-pwd' @click='showPwd'>
+        <el-input
+          name="password"
+          :type="pwdType"
+          @keyup.enter.native="handleLogin"
+          v-model="loginForm.password"
+          autocomplete="on"
+          placeholder="密码"
+        />
+        <span class="show-pwd" @click="showPwd">
           <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
         </span>
       </el-form-item>
       <p style="color: red" v-if="failure">{{failure.message}}</p>
-      <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
+      <el-button
+        type="primary"
+        style="width:100%;margin-bottom:30px;"
+        :loading="loading"
+        @click.native.prevent="handleLogin"
+      >登录</el-button>
     </el-form>
   </div>
 </template>

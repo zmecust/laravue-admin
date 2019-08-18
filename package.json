@@ -1,8 +1,8 @@
 {
-  "name": "hotel-medium-vue",
+  "name": "laravue-admin",
   "version": "1.0.0",
   "description": "A Vue.js project",
-  "author": "zmecust <root@laravue.org>",
+  "author": "Min Zhang <root@laravue.org>",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",

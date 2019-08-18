@@ -2,22 +2,38 @@
   <div class="content">
     <div class="search">
       <el-form label-width="80px" ref="searchform" :model="searchform">
-        <el-input placeholder="请输入文章title" icon="search" v-model="searchform.name" style="width: 30%; float: left; margin-right: 20px"></el-input>
+        <el-input
+          placeholder="请输入文章title"
+          icon="search"
+          v-model="searchform.name"
+          style="width: 30%; float: left; margin-right: 20px"
+        ></el-input>
         <el-form-item>
           <el-button type="primary" @click="submit()">搜索</el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="table">
-      <el-button @click="add()" icon="plus" type="primary" class="add" v-has="has(create_article)">创建文章</el-button>
-      <el-table v-bind:data="tableData" border style="width: 100%" highlight-current-row :fit="listWidth">
+      <el-button
+        @click="add()"
+        icon="plus"
+        type="primary"
+        class="add"
+        v-has="has(create_article)"
+      >创建文章</el-button>
+      <el-table
+        v-bind:data="tableData"
+        border
+        style="width: 100%"
+        highlight-current-row
+        :fit="listWidth"
+      >
         <el-table-column align="center" label="序号" width="80">
           <template scope="scope">
             <span>{{scope.$index + 1}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="user.name" label="作者：" :align="align">
-        </el-table-column>
+        <el-table-column prop="user.name" label="作者：" :align="align"></el-table-column>
         <el-table-column prop="title" width="400" label="标题：" :align="align">
           <template scope="scope">
             <span class="link-type" @click="edit(scope.$index, scope.row.id)">{{scope.row.title}}</span>
@@ -29,12 +45,9 @@
             <el-tag close-transition v-for="index in scope.row.tags" :key="index.id">{{index.name}}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="view_count" sortable label="查看数：" :align="align">
-        </el-table-column>
-        <el-table-column prop="likes_count" sortable label="点赞数：" :align="align">
-        </el-table-column>
-        <el-table-column prop="is_hidden" label="是否隐藏：" :align="align">
-        </el-table-column>
+        <el-table-column prop="view_count" sortable label="查看数：" :align="align"></el-table-column>
+        <el-table-column prop="likes_count" sortable label="点赞数：" :align="align"></el-table-column>
+        <el-table-column prop="is_hidden" label="是否隐藏：" :align="align"></el-table-column>
         <el-table-column prop="created_at" sortable label="创建时间：" :align="align">
           <template scope="scope">
             <span>{{scope.row.created_at.slice(0, 16)}}</span>
@@ -42,14 +55,31 @@
         </el-table-column>
         <el-table-column label="操作" width="220" :align="align">
           <template scope="scope">
-            <el-button @click="edit(scope.$index, scope.row.id)" size="small" icon="edit" v-has="has(edit_article)">编辑</el-button>
-            <el-button size="small" type="danger" @click="del(scope.$index, scope.row.id)" icon="delete" v-has="has(delete_article)">删除</el-button>
+            <el-button
+              @click="edit(scope.$index, scope.row.id)"
+              size="small"
+              icon="edit"
+              v-has="has(edit_article)"
+            >编辑</el-button>
+            <el-button
+              size="small"
+              type="danger"
+              @click="del(scope.$index, scope.row.id)"
+              icon="delete"
+              v-has="has(delete_article)"
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <div class="pagination">
-        <el-pagination layout="sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :total="total" :page-size="pageSize" :page-sizes="pageSizes">
-        </el-pagination>
+        <el-pagination
+          layout="sizes, prev, pager, next"
+          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
+          :total="total"
+          :page-size="pageSize"
+          :page-sizes="pageSizes"
+        ></el-pagination>
       </div>
     </div>
   </div>

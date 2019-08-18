@@ -2,32 +2,43 @@
   <div class="content">
     <div class="search">
       <el-form label-width="80px" ref="searchform" :model="searchform">
-        <el-input placeholder="请输入用户名" icon="search" v-model="searchform.name" style="width: 30%; float: left; margin-right: 20px"></el-input>
+        <el-input
+          placeholder="请输入用户名"
+          icon="search"
+          v-model="searchform.name"
+          style="width: 30%; float: left; margin-right: 20px"
+        ></el-input>
         <el-form-item>
           <el-button type="primary" @click="submit()">搜索</el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="table">
-      <el-table v-bind:data="tableData" border style="width: 100%" highlight-current-row :fit="listWidth">
-        <el-table-column type="selection" width="50">
-        </el-table-column>
-        <el-table-column prop="id" label="id" :align="align" v-if="false">
-        </el-table-column>
+      <el-table
+        v-bind:data="tableData"
+        border
+        style="width: 100%"
+        highlight-current-row
+        :fit="listWidth"
+      >
+        <el-table-column type="selection" width="50"></el-table-column>
+        <el-table-column prop="id" label="id" :align="align" v-if="false"></el-table-column>
         <el-table-column prop="name" label="用户名：" :align="align">
           <template scope="scope">
             <span class="link-type" @click="edit(scope.$index, scope.row.id)">{{scope.row.name}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="email" label="邮箱：" :align="align">
-        </el-table-column>
+        <el-table-column prop="email" label="邮箱：" :align="align"></el-table-column>
         <el-table-column prop="modify_roles" label="角色：" :align="align">
           <template scope="scope">
-            <el-tag close-transition v-for="index in scope.row.roles" :key="index.id">{{index.description}}</el-tag>
+            <el-tag
+              close-transition
+              v-for="index in scope.row.roles"
+              :key="index.id"
+            >{{index.description}}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="articles_count" sortable label="发表文章数：" :align="align">
-        </el-table-column>
+        <el-table-column prop="articles_count" sortable label="发表文章数：" :align="align"></el-table-column>
         <el-table-column prop="is_confirmed" sortable label="是否激活：" :align="align">
           <template scope="scope">
             <el-input v-show="scope.row.edit" size="small" v-model="scope.row.is_confirmed"></el-input>
@@ -40,23 +51,42 @@
             <span v-show="!scope.row.edit">{{ scope.row.is_banned }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="last_actived_at" sortable label="最后访问：" :align="align">
-        </el-table-column>
-        <el-table-column prop="created_at" sortable label="创建时间：" :align="align">
-        </el-table-column>
+        <el-table-column prop="last_actived_at" sortable label="最后访问：" :align="align"></el-table-column>
+        <el-table-column prop="created_at" sortable label="创建时间：" :align="align"></el-table-column>
         <el-table-column label="操作" width="220" :align="align">
           <template scope="scope">
-            <el-button :type="scope.row.edit?'success':'primary'" @click='handerUpdate(scope.$index, scope.row.id, scope.row.edit=!scope.row.edit)' size="small" icon="edit" v-has="has(edit_user)">{{scope.row.edit?'完成':'编辑'}}</el-button>
-            <el-button size="small" type="danger" @click="del(scope.$index, scope.row.id)" icon="delete" v-has="has(delete_user)">删除</el-button>
+            <el-button
+              :type="scope.row.edit?'success':'primary'"
+              @click="handerUpdate(scope.$index, scope.row.id, scope.row.edit=!scope.row.edit)"
+              size="small"
+              icon="edit"
+              v-has="has(edit_user)"
+            >{{scope.row.edit?'完成':'编辑'}}</el-button>
+            <el-button
+              size="small"
+              type="danger"
+              @click="del(scope.$index, scope.row.id)"
+              icon="delete"
+              v-has="has(delete_user)"
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog :title="dialogTitle" v-bind:close-on-click-modal="false" v-model="showEdit" v-bind:close-on-press-escape="true">
+      <el-dialog
+        :title="dialogTitle"
+        v-bind:close-on-click-modal="false"
+        v-model="showEdit"
+        v-bind:close-on-press-escape="true"
+      >
         <el-form v-bind:model="editTable" ref="editForm" label-position="left" label-width="100px">
           <el-form-item label="角色名：">
-            <el-select size="" class="select" multiple v-model="editRoles">
-              <el-option v-for="item in roles" :label="item.description" :value="item.description" :key="item.name">
-              </el-option>
+            <el-select size class="select" multiple v-model="editRoles">
+              <el-option
+                v-for="item in roles"
+                :label="item.description"
+                :value="item.description"
+                :key="item.name"
+              ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -66,8 +96,14 @@
         </el-form>
       </el-dialog>
       <div class="pagination">
-        <el-pagination layout="sizes,prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :total="total" :page-size="pageSize" :page-sizes="pageSizes">
-        </el-pagination>
+        <el-pagination
+          layout="sizes,prev, pager, next"
+          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
+          :total="total"
+          :page-size="pageSize"
+          :page-sizes="pageSizes"
+        ></el-pagination>
       </div>
     </div>
   </div>

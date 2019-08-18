@@ -2,33 +2,55 @@
   <div class="content">
     <div class="search">
       <el-form label-width="80px" ref="searchform" :model="searchform">
-        <el-input placeholder="请输入角色名" icon="search" v-model="searchform.name" style="width: 30%; float: left; margin-right: 20px"></el-input>
+        <el-input
+          placeholder="请输入角色名"
+          icon="search"
+          v-model="searchform.name"
+          style="width: 30%; float: left; margin-right: 20px"
+        ></el-input>
         <el-form-item>
           <el-button type="primary" @click="submit()">搜索</el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="table">
-      <el-button @click="add()" icon="plus" type="primary" class="add"  v-has="has(create_role)">创建角色</el-button>
-      <el-table v-bind:data="tableData" border style="width: 100%" highlight-current-row :fit="listWidth">
-        <el-table-column type="selection" width="50">
-        </el-table-column>
-        <el-table-column prop="id" label="id" :align="align" v-if="false">
-        </el-table-column>
-        <el-table-column prop="name" label="角色名：" :align="align">
-        </el-table-column>
-        <el-table-column prop="description" label="角色描述：" :align="align">
-        </el-table-column>
-        <el-table-column prop="created_at" label="创建时间：" :align="align">
-        </el-table-column>
+      <el-button @click="add()" icon="plus" type="primary" class="add" v-has="has(create_role)">创建角色</el-button>
+      <el-table
+        v-bind:data="tableData"
+        border
+        style="width: 100%"
+        highlight-current-row
+        :fit="listWidth"
+      >
+        <el-table-column type="selection" width="50"></el-table-column>
+        <el-table-column prop="id" label="id" :align="align" v-if="false"></el-table-column>
+        <el-table-column prop="name" label="角色名：" :align="align"></el-table-column>
+        <el-table-column prop="description" label="角色描述：" :align="align"></el-table-column>
+        <el-table-column prop="created_at" label="创建时间：" :align="align"></el-table-column>
         <el-table-column label="操作" width="220" :align="align">
           <template scope="scope">
-            <el-button size="small" @click="edit(scope.$index, scope.row.id)" icon="edit" v-has="has(edit_role)">编辑</el-button>
-            <el-button size="small" type="danger" @click="del(scope.$index, scope.row.id)" icon="delete" v-has="has(delete_role)">删除</el-button>
+            <el-button
+              size="small"
+              @click="edit(scope.$index, scope.row.id)"
+              icon="edit"
+              v-has="has(edit_role)"
+            >编辑</el-button>
+            <el-button
+              size="small"
+              type="danger"
+              @click="del(scope.$index, scope.row.id)"
+              icon="delete"
+              v-has="has(delete_role)"
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog :title="dialogTitle" v-bind:close-on-click-modal="false" v-model="showEdit" v-bind:close-on-press-escape="true">
+      <el-dialog
+        :title="dialogTitle"
+        v-bind:close-on-click-modal="false"
+        v-model="showEdit"
+        v-bind:close-on-press-escape="true"
+      >
         <el-form v-bind:model="editTable" ref="editForm" label-position="left" label-width="100px">
           <el-form-item label="角色名：">
             <el-input v-model="editTable.name"></el-input>
@@ -44,7 +66,12 @@
               <div v-for="(group, index) in groupPermissions" :key="index">
                 <div class="permission">
                   <p>{{index}} 模块:</p>
-                  <el-checkbox style="float: left" v-for="permission in group" :label="permission.display_name" :key="permission.id"></el-checkbox>
+                  <el-checkbox
+                    style="float: left"
+                    v-for="permission in group"
+                    :label="permission.display_name"
+                    :key="permission.id"
+                  ></el-checkbox>
                 </div>
               </div>
             </el-checkbox-group>
@@ -57,8 +84,14 @@
         </el-form>
       </el-dialog>
       <div class="pagination">
-        <el-pagination layout="sizes,prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :total="total" :page-size="pageSize" :page-sizes="pageSizes">
-        </el-pagination>
+        <el-pagination
+          layout="sizes,prev, pager, next"
+          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
+          :total="total"
+          :page-size="pageSize"
+          :page-sizes="pageSizes"
+        ></el-pagination>
       </div>
     </div>
   </div>
