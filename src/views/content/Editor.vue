@@ -41,6 +41,7 @@
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :headers="headers"
+            class="edit-upload"
           >
             <img
               v-if="params.article_url"
@@ -186,8 +187,8 @@ export default {
             imageUpload: true,
             crossDomainUpload: true,
             imageFormats: ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'],
-            imageUploadURL: 'https://api.laravue.org/api/v1/markdown/upload',
-            uploadCallbackURL: 'https://admin.laravue.org',
+            imageUploadURL: `${process.env.API_URL}/markdown/upload`,
+            uploadCallbackURL: process.env.URL,
             emoji: true,
           });
         }
@@ -238,7 +239,7 @@ export default {
 };
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss">
 @import '../../../static/markdown/css/editormd.min.css';
 
 [v-cloak] {
@@ -247,6 +248,14 @@ export default {
 
 .editor {
   padding: 20px 20px 0 20px;
+}
+
+.el-upload {
+  display: block;
+
+  .el-upload-dragger {
+    width: 100%;
+  }
 }
 
 .title {
