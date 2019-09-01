@@ -18,6 +18,11 @@
 
 > 普通用户账号：owner，密码：123456
 
+## 页面
+![](https://note.laravue.org/images/note/20190901-223741-562.png)
+
+![](https://note.laravue.org/images/note/20190901-223632-995.png)
+
 ## Contact
 
 > 如有任何疑问, 请联系我 **`root@laravue.org`**
